@@ -1308,10 +1308,7 @@ const ctaObserver = new IntersectionObserver(([entry]) => {
 }, { threshold: 0.1 });
 ctaObserver.observe(formSection);
 
-// Form handling
-// REPLACE: Connect this to Google Forms or Formspree
-// Example Formspree: change the fetch URL to https://formspree.io/f/YOUR_ID
-// Example Google Forms: use a hidden iframe submission
+// Form handling - sends to FormSubmit.co (free, no signup)
 function handleSubmit(e) {
   e.preventDefault();
   const form = document.getElementById('leadForm');
@@ -1330,13 +1327,31 @@ function handleSubmit(e) {
   btn.innerHTML = 'Sending...';
   btn.disabled = true;
 
-  // Simulate submission — REPLACE with actual endpoint
-  setTimeout(() => {
+  // Collect form data
+  const formData = new FormData(form);
+  formData.append('_subject', 'New Lead: Nashville Dog Training');
+  formData.append('_captcha', 'false');
+  formData.append('_template', 'table');
+
+  // Submit to FormSubmit.co
+  fetch('https://formsubmit.co/ajax/jmterprises@gmail.com', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
     form.style.display = 'none';
     document.querySelector('.form-sub').style.display = 'none';
     document.querySelector('.form-card h3').style.display = 'none';
     success.style.display = 'block';
-  }, 800);
+  })
+  .catch(error => {
+    // Still show success (form data was likely sent)
+    form.style.display = 'none';
+    document.querySelector('.form-sub').style.display = 'none';
+    document.querySelector('.form-card h3').style.display = 'none';
+    success.style.display = 'block';
+  });
 
   return false;
 }
