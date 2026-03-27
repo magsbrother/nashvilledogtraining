@@ -50,7 +50,25 @@ NASHVILLE_AREAS = [
     "green hills", "hermitage", "madison", "nolensville", "thompsons station",
     "clarksville", "dickson", "columbia", "east nashville", "west nashville",
     "germantown nashville", "the gulch", "sylvan park", "12 south",
-    "berry hill", "oak hill", "forest hills", "belle meade"
+    "berry hill", "oak hill", "forest hills", "belle meade",
+    "donelson", "old hickory", "inglewood", "east nashville", "bordeaux",
+    "joelton", "whites creek", "pegram", "kingston springs", "fairview",
+    "pleasant view", "greenbrier", "springfield", "portland", "westmoreland",
+    "hartsville", "carthage", "watertown", "smithville", "mcminnville",
+    "tullahoma", "shelbyville", "lewisburg", "chapel hill", "eagleville",
+    "rockvale", "christiana", "lascassas", "woodbury", "manchester",
+    "37201", "37203", "37204", "37205", "37206", "37207", "37208", "37209",
+    "37210", "37211", "37212", "37214", "37215", "37216", "37217", "37218",
+    "37219", "37220", "37221", "37027", "37064", "37067", "37069"
+]
+
+SERVICES = [
+    "puppy training", "obedience training", "behavior modification",
+    "aggression training", "anxiety training", "leash training",
+    "crate training", "potty training", "off leash training",
+    "protection dog training", "service dog training", "therapy dog training",
+    "board and train", "private lessons", "group classes",
+    "in home training", "online dog training", "virtual dog training"
 ]
 
 COMMANDS = [
@@ -109,6 +127,31 @@ def generate_title_variations():
     for problem in PROBLEMS:
         for age in AGES:
             titles.append(f"{problem} in {age} dogs")
+
+    # Pattern: [service] [nashville area]
+    for service in SERVICES:
+        for area in NASHVILLE_AREAS:
+            titles.append(f"{service} {area}")
+
+    # Pattern: [breed] [service] near me
+    for breed in BREEDS[:25]:
+        for service in SERVICES[:8]:
+            titles.append(f"{breed} {service} near me")
+
+    # Pattern: best [service] for [breed]
+    for service in SERVICES[:10]:
+        for breed in BREEDS[:20]:
+            titles.append(f"best {service} for {breed}")
+
+    # Pattern: [age] dog [problem] help
+    for age in AGES:
+        for problem in PROBLEMS:
+            titles.append(f"{age} dog {problem} help")
+
+    # Pattern: how much does [service] cost
+    for service in SERVICES:
+        titles.append(f"how much does {service} cost")
+        titles.append(f"{service} prices nashville")
 
     return list(set(titles))
 
