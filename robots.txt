@@ -1,0 +1,8 @@
+# robots.txt for Nashville Dog Training
+# Allow all crawlers to index the site
+
+User-agent: *
+Allow: /
+
+# Sitemap location (update when deployed)
+Sitemap: https://www.example.com/sitemap.xml
