@@ -5,4 +5,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location (update when deployed)
-Sitemap: https://www.example.com/sitemap.xml
+Sitemap: https://magsbrother.github.io/nashvilledogtraining/sitemap.xml
