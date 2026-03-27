@@ -30,7 +30,7 @@
   "name": "Nashville Dog Training",
   "description": "Nashville's premier in-home dog training. Balanced obedience training that builds trust, respect, and real-world manners. Free consultation — serving the greater Nashville area.",
   "url": "https://magsbrother.github.io/nashvilledogtraining/",
-  "telephone": "(615) XXX-XXXX",
+  "telephone": "(203) 570-0531",
   "priceRange": "$$",
   "areaServed": {
     "@type": "Place",
@@ -63,13 +63,6 @@
       "addressRegion": "TN"
     }
   ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "ratingCount": "500",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Nashville",
@@ -955,12 +948,12 @@ h1, h2, h3, h4 {
       <div class="hero-visual">
         <div class="hero-visual-ring">
           <div class="hero-stat-float" style="top:10%;right:-10%">
-            <span class="stat-num">500+</span>
-            <span class="stat-label">Dogs Trained</span>
+            <span class="stat-num">1-on-1</span>
+            <span class="stat-label">In-Home Sessions</span>
           </div>
           <div class="hero-stat-float" style="bottom:15%;left:-5%">
-            <span class="stat-num">5.0</span>
-            <span class="stat-label">Google Rating</span>
+            <span class="stat-num">Free</span>
+            <span class="stat-label">Consultation</span>
           </div>
           <svg class="hero-visual-icon" width="120" height="120" viewBox="0 0 120 120" fill="none">
             <path d="M60 20c-8 0-15 4-20 10s-10 15-10 25c0 18 12 30 30 40 18-10 30-22 30-40 0-10-5-19-10-25s-12-10-20-10z" stroke="currentColor" stroke-width="2.5" fill="none"/>
@@ -1117,9 +1110,9 @@ h1, h2, h3, h4 {
 <section class="testimonials">
   <div class="container">
     <div style="text-align:center" class="reveal">
-      <div class="section-label" style="justify-content:center">Real Results</div>
-      <h2 class="section-title">Nashville Dog Owners Love Us</h2>
-      <p class="section-sub" style="margin-left:auto;margin-right:auto">Don't just take our word for it.</p>
+      <div class="section-label" style="justify-content:center">What To Expect</div>
+      <h2 class="section-title">Transform Your Dog's Behavior</h2>
+      <p class="section-sub" style="margin-left:auto;margin-right:auto">Results that speak for themselves.</p>
     </div>
     <div class="testimonial-grid">
       <div class="testimonial-card reveal">
@@ -1346,11 +1339,14 @@ function handleSubmit(e) {
     success.style.display = 'block';
   })
   .catch(error => {
-    // Still show success (form data was likely sent)
-    form.style.display = 'none';
-    document.querySelector('.form-sub').style.display = 'none';
-    document.querySelector('.form-card h3').style.display = 'none';
-    success.style.display = 'block';
+    // Show error with phone fallback
+    btn.innerHTML = 'Something went wrong';
+    btn.disabled = false;
+    btn.style.background = '#c0392b';
+    const errorMsg = document.createElement('p');
+    errorMsg.style.cssText = 'color:#c0392b;margin-top:12px;font-size:0.9rem;';
+    errorMsg.innerHTML = 'Please try again or call us at <a href="tel:2035700531" style="color:#c0392b;font-weight:600;">(203) 570-0531</a>';
+    btn.parentNode.insertBefore(errorMsg, btn.nextSibling);
   });
 
   return false;
