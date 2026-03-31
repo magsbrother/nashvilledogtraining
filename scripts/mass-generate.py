@@ -133,6 +133,17 @@ TOPICS = [
     ("why-choose-nashville-dog-training",     "Why Nashville Dog Training: Our Approach and Promise"),
     ("nashville-dog-training-results",        "Real Results: Nashville Dog Training Success Stories"),
     ("dog-training-free-consultation",        "Free Dog Training Consultation in Nashville: What to Expect"),
+    # New topics – batch 2
+    ("dog-training-nolensville-tn",           "Dog Training in Nolensville, TN: In-Home Options Near You"),
+    ("dog-training-gallatin-tn",              "Dog Training in Gallatin, TN: What Nashville Area Trainers Offer"),
+    ("dog-training-lebanon-tn",               "Dog Training in Lebanon, TN: Local In-Home Training Guide"),
+    ("dog-training-columbia-tn",              "Dog Training in Columbia, TN: Trusted In-Home Trainers"),
+    ("border-collie-training-guide-nashville","Border Collie Training in Nashville: High-Energy Breed Tips"),
+    ("australian-shepherd-training-tips",     "Australian Shepherd Training: Managing a Smart, Driven Dog"),
+    ("beagle-training-guide-nashville",       "Beagle Training Tips for Nashville Dog Owners"),
+    ("dog-training-after-move-to-nashville",  "New to Nashville? How to Settle Your Dog Into a New Home"),
+    ("dog-leash-reactivity-nashville",        "Leash Reactivity in Dogs: A Nashville Trainer's Fix-It Guide"),
+    ("how-to-teach-dog-to-greet-calmly",      "Teaching Your Dog to Greet People Calmly: Step-by-Step Guide"),
 ]
 
 
