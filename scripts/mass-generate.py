@@ -1,517 +1,271 @@
 #!/usr/bin/env python3
 """
-Mass SEO Blog Post Generator for Nashville Dog Training
-Generates 50 SEO-optimized HTML blog posts per run.
-Tracks used topics in a JSON file to avoid duplicates.
+Mass generator - creates thousands of SEO posts via topic combinations
 """
 
-import json
-import os
 import re
-import sys
-from datetime import datetime, timedelta
+import random
+from datetime import datetime
 from pathlib import Path
 
-# ── paths ──────────────────────────────────────────────────────────────────
-REPO_ROOT   = Path(__file__).resolve().parent.parent
-BLOG_DIR    = REPO_ROOT / "blog"
-TRACKER     = REPO_ROOT / "scripts" / "used-topics.json"
-SITEMAP     = REPO_ROOT / "sitemap.xml"
-SITE_URL    = "https://nashvilledogtraining.com"
-
-POSTS_PER_RUN = 50
-
-# ── topic pool ─────────────────────────────────────────────────────────────
-TOPICS = [
-    # Obedience basics
-    ("how-to-teach-your-dog-to-sit",          "How to Teach Your Dog to Sit: A Step-by-Step Guide for Nashville Owners"),
-    ("how-to-teach-your-dog-to-stay",         "How to Teach Your Dog to Stay: Tips from Nashville's Top Trainers"),
-    ("how-to-teach-your-dog-to-come",         "Recall Training: How to Teach Your Dog to Come Every Time"),
-    ("how-to-teach-down-command",             "How to Teach the Down Command to Your Dog"),
-    ("how-to-teach-heel-command",             "Teaching Your Dog to Heel: A Complete Nashville Guide"),
-    ("how-to-teach-leave-it-command",         "Leave It! How to Train Your Dog to Ignore Distractions"),
-    ("how-to-teach-drop-it-command",          "Drop It Command: Keep Your Dog Safe with This Simple Skill"),
-    ("how-to-teach-place-command",            "The 'Place' Command: The Most Underrated Dog Training Skill"),
-    ("how-to-teach-dog-to-wait",              "Wait vs Stay: Teaching Your Dog Both Commands"),
-    ("how-to-teach-dog-off-command",          "Off! Teaching Your Dog Not to Jump on People"),
-    # Leash & walking
-    ("stop-dog-pulling-on-leash",             "Stop Your Dog Pulling on the Leash for Good"),
-    ("loose-leash-walking-guide",             "Loose-Leash Walking: The Complete Nashville Dog Owner's Guide"),
-    ("best-harness-vs-collar-for-training",   "Harness vs Collar: Which Is Best for Dog Training in Nashville?"),
-    ("how-to-walk-two-dogs-at-once",          "How to Walk Two Dogs at Once Without Losing Your Mind"),
-    ("dog-pulling-solutions-nashville",       "5 Proven Solutions for Dogs That Pull in Nashville Parks"),
-    # Puppy topics
-    ("puppy-training-basics-nashville",       "Puppy Training Basics for Nashville New Dog Owners"),
-    ("how-to-potty-train-a-puppy",            "How to Potty Train a Puppy: Nashville's Complete Guide"),
-    ("puppy-socialization-guide",             "Puppy Socialization: Why the First 16 Weeks Are Critical"),
-    ("puppy-biting-how-to-stop",              "How to Stop Puppy Biting: Bite Inhibition Training"),
-    ("crate-training-puppy-guide",            "Crate Training Your Puppy the Right Way"),
-    ("puppy-schedule-daily-routine",          "The Ideal Daily Schedule for Your New Puppy"),
-    ("best-age-to-start-dog-training",        "What's the Best Age to Start Training Your Dog?"),
-    ("puppy-first-week-home-tips",            "Your Puppy's First Week Home: Survival Tips for Nashville Families"),
-    # Behavior problems
-    ("how-to-stop-dog-barking",               "How to Stop Excessive Barking: A Nashville Dog Trainer's Guide"),
-    ("dog-separation-anxiety-solutions",      "Dog Separation Anxiety: Causes, Signs, and Real Solutions"),
-    ("how-to-stop-dog-jumping-guests",        "Stop Your Dog Jumping on Guests Once and For All"),
-    ("dog-aggression-training-nashville",     "Dog Aggression Training in Nashville: What You Need to Know"),
-    ("reactive-dog-training-tips",            "Reactive Dog Training: How to Help a Dog That Lunges and Barks"),
-    ("dog-resource-guarding-solutions",       "Resource Guarding in Dogs: How to Safely Address It"),
-    ("how-to-stop-destructive-chewing",       "How to Stop Destructive Chewing in Dogs"),
-    ("dog-counter-surfing-fix",               "Counter Surfing: How to Keep Your Dog Off the Kitchen Counter"),
-    ("dog-door-manners-training",             "Door Manners: Stop Your Dog Bolting Out the Front Door"),
-    ("fear-based-behavior-dog-training",      "Understanding and Training Fear-Based Behaviors in Dogs"),
-    # Local Nashville content
-    ("dog-training-nashville-tn",             "Dog Training in Nashville, TN: What to Expect"),
-    ("dog-trainer-franklin-tn",               "Finding the Right Dog Trainer in Franklin, TN"),
-    ("dog-training-brentwood-tn",             "In-Home Dog Training in Brentwood, TN: Is It Worth It?"),
-    ("dog-training-murfreesboro-tn",          "Dog Training Services in Murfreesboro, TN"),
-    ("dog-training-hendersonville-tn",        "Dog Training in Hendersonville, TN: Local Guide"),
-    ("dog-training-mt-juliet-tn",             "Dog Trainer in Mt. Juliet, TN: Everything You Need to Know"),
-    ("best-dog-parks-nashville",              "Best Dog Parks in Nashville: A Trainer's Review"),
-    ("dog-friendly-restaurants-nashville",    "Dog-Friendly Restaurants in Nashville: Tips for Well-Behaved Dogs"),
-    ("dog-training-spring-hill-tn",           "Dog Training in Spring Hill, TN: In-Home Options"),
-    ("dog-training-smyrna-tn",                "Dog Training in Smyrna, TN: What Nashville Area Trainers Offer"),
-    # In-home training
-    ("in-home-dog-training-benefits",         "In-Home Dog Training: 7 Reasons It Outperforms Group Classes"),
-    ("how-in-home-dog-training-works",        "How In-Home Dog Training Works: Nashville Owner's Guide"),
-    ("in-home-vs-board-and-train",            "In-Home Training vs Board and Train: Which Is Right for Your Dog?"),
-    ("in-home-training-cost-nashville",       "How Much Does In-Home Dog Training Cost in Nashville?"),
-    # Breed-specific
-    ("golden-retriever-training-tips",        "Golden Retriever Training Tips for Nashville Families"),
-    ("labrador-training-guide-nashville",     "Labrador Retriever Training Guide for Nashville Dog Owners"),
-    ("german-shepherd-training-nashville",    "German Shepherd Training in Nashville: Breed-Specific Tips"),
-    ("french-bulldog-training-tips",          "French Bulldog Training: What Nashville Owners Need to Know"),
-    ("doodle-dog-training-guide",             "Goldendoodle & Labradoodle Training: Nashville Doodle Guide"),
-    ("pitbull-training-tips-nashville",       "Pit Bull Training Tips: Busting Myths in Nashville"),
-    ("small-dog-training-tips",               "Small Dog Training: Why Little Dogs Need Training Too"),
-    ("rescue-dog-training-guide",             "Rescue Dog Training: A Nashville Guide to the First 90 Days"),
-    # Methods & philosophy
-    ("balanced-dog-training-explained",       "Balanced Dog Training Explained: What It Means and Why It Works"),
-    ("positive-reinforcement-training",       "Positive Reinforcement Dog Training: A Nashville Trainer's Guide"),
-    ("e-collar-training-facts",               "E-Collar Training: Facts, Myths, and Safe Use in Nashville"),
-    ("marker-training-dogs-guide",            "Marker Training for Dogs: How to Use a Clicker or Word Marker"),
-    ("dog-training-consistency-tips",         "Why Consistency Is the #1 Dog Training Rule"),
-    # Health & lifestyle
-    ("exercise-needs-by-dog-breed",           "Exercise Needs by Dog Breed: Nashville Owner's Reference Guide"),
-    ("mental-stimulation-for-dogs",           "Mental Stimulation for Dogs: 10 Ideas Nashville Trainers Love"),
-    ("dog-nutrition-training-connection",     "How Your Dog's Diet Affects Their Training Performance"),
-    ("dog-enrichment-activities-nashville",   "Dog Enrichment Activities for Nashville's Active Pet Owners"),
-    ("how-much-exercise-does-a-dog-need",     "How Much Exercise Does Your Dog Really Need?"),
-    # Advanced skills
-    ("off-leash-training-guide",              "Off-Leash Training: Is Your Dog Ready? Nashville Guide"),
-    ("dog-distraction-proofing-training",     "Distraction Proofing: Train Your Dog to Focus Anywhere"),
-    ("advanced-obedience-training-nashville", "Advanced Obedience Training in Nashville: Next-Level Skills"),
-    ("dog-impulse-control-training",          "Impulse Control Training: Calm Your Dog's Excitement"),
-    ("dog-training-real-world-scenarios",     "Real-World Dog Training: Why Context Matters"),
-    # FAQs & guides
-    ("how-long-does-dog-training-take",       "How Long Does Dog Training Take? Honest Nashville Answers"),
-    ("how-to-choose-a-dog-trainer-nashville", "How to Choose a Dog Trainer in Nashville: 7 Key Questions"),
-    ("dog-training-cost-guide-nashville",     "Dog Training Cost in Nashville: What You Should Expect to Pay"),
-    ("group-class-vs-private-training",       "Group Dog Classes vs Private Training: Which Is Better?"),
-    ("dog-training-mistakes-owners-make",     "10 Dog Training Mistakes Nashville Owners Commonly Make"),
-    ("when-to-hire-professional-dog-trainer", "When Should You Hire a Professional Dog Trainer?"),
-    ("dog-training-schedule-for-owners",      "Building a Dog Training Schedule That Fits Your Nashville Life"),
-    # Kids & dogs
-    ("dog-training-with-kids-in-home",        "Dog Training with Kids: How to Keep Your Home Safe and Happy"),
-    ("teaching-kids-to-interact-with-dogs",   "Teaching Kids to Interact Safely with Dogs"),
-    ("family-dog-training-tips-nashville",    "Family Dog Training Tips for Nashville Households"),
-    # Seasonal
-    ("summer-dog-training-tips-nashville",    "Summer Dog Training Tips for Nashville's Hot Weather"),
-    ("holiday-dog-training-tips",             "Holiday Dog Training: Prep Your Dog for Guests and Chaos"),
-    ("spring-dog-training-refresh",           "Spring Dog Training Refresh: Reset Your Dog's Manners"),
-    ("winter-indoor-dog-training-ideas",      "Winter Dog Training: Keeping Skills Sharp Indoors"),
-    # Multi-dog
-    ("training-multiple-dogs-guide",          "Training Multiple Dogs: Nashville's Guide to a Harmonious Pack"),
-    ("introducing-new-dog-to-resident-dog",   "How to Introduce a New Dog to Your Resident Dog"),
-    # Special situations
-    ("dog-training-after-having-baby",        "Dog Training After Having a Baby: Nashville Family Guide"),
-    ("senior-dog-training-tips",              "Senior Dog Training: It's Never Too Late to Learn"),
-    ("dog-training-for-first-time-owners",    "Dog Training for First-Time Nashville Dog Owners"),
-    ("training-a-rescue-with-unknown-history","Training a Rescue Dog with an Unknown History"),
-    ("dog-training-apartment-nashville",      "Dog Training in a Nashville Apartment: Making It Work"),
-    # Trust & testimonials
-    ("why-choose-nashville-dog-training",     "Why Nashville Dog Training: Our Approach and Promise"),
-    ("nashville-dog-training-results",        "Real Results: Nashville Dog Training Success Stories"),
-    ("dog-training-free-consultation",        "Free Dog Training Consultation in Nashville: What to Expect"),
-    # New topics – batch 2
-    ("dog-training-nolensville-tn",           "Dog Training in Nolensville, TN: In-Home Options Near You"),
-    ("dog-training-gallatin-tn",              "Dog Training in Gallatin, TN: What Nashville Area Trainers Offer"),
-    ("dog-training-lebanon-tn",               "Dog Training in Lebanon, TN: Local In-Home Training Guide"),
-    ("dog-training-columbia-tn",              "Dog Training in Columbia, TN: Trusted In-Home Trainers"),
-    ("border-collie-training-guide-nashville","Border Collie Training in Nashville: High-Energy Breed Tips"),
-    ("australian-shepherd-training-tips",     "Australian Shepherd Training: Managing a Smart, Driven Dog"),
-    ("beagle-training-guide-nashville",       "Beagle Training Tips for Nashville Dog Owners"),
-    ("dog-training-after-move-to-nashville",  "New to Nashville? How to Settle Your Dog Into a New Home"),
-    ("dog-leash-reactivity-nashville",        "Leash Reactivity in Dogs: A Nashville Trainer's Fix-It Guide"),
-    ("how-to-teach-dog-to-greet-calmly",      "Teaching Your Dog to Greet People Calmly: Step-by-Step Guide"),
-    # New topics – batch 3
-    ("husky-training-tips-nashville",          "Husky Training in Nashville: Managing a High-Energy Sled Dog"),
-    ("rottweiler-training-guide-nashville",    "Rottweiler Training in Nashville: Confidence and Control"),
-    ("chihuahua-training-tips-nashville",      "Chihuahua Training Tips: Big Attitude, Small Dog Nashville Guide"),
-    ("corgi-training-guide-nashville",         "Corgi Training in Nashville: Herding Instincts and Smart Minds"),
-    ("poodle-training-tips-nashville",         "Poodle Training in Nashville: Tapping Into High Intelligence"),
-    ("boxer-training-guide-nashville",         "Boxer Training Nashville: Channeling Boundless Energy"),
-    ("doberman-training-tips-nashville",       "Doberman Training in Nashville: Loyal, Driven, Trainable"),
-    ("great-dane-training-nashville",          "Great Dane Training in Nashville: Big Dog, Big Responsibility"),
-    ("shih-tzu-training-guide-nashville",      "Shih Tzu Training in Nashville: Small Breed, Strong Personality"),
-    ("bernese-mountain-dog-training",          "Bernese Mountain Dog Training: Nashville Guide for Giant Breed Owners"),
-    ("dog-training-antioch-tn",               "Dog Training in Antioch, TN: In-Home Options Near Nashville"),
-    ("dog-training-lavergne-tn",              "Dog Training in La Vergne, TN: Trusted Nashville Area Trainers"),
-    ("dog-training-fairview-tn",              "Dog Training in Fairview, TN: Local In-Home Training Guide"),
-    ("dog-training-white-house-tn",           "Dog Training in White House, TN: Nashville Area Trainer Guide"),
-    ("dog-training-goodlettsville-tn",        "Dog Training in Goodlettsville, TN: What to Expect"),
-    ("dog-training-madison-tn",               "Dog Training in Madison, TN: In-Home Solutions for Your Dog"),
-    ("dog-training-old-hickory-tn",           "Dog Training in Old Hickory, TN: Nashville Area In-Home Trainers"),
-    ("dog-training-hermitage-tn",             "Dog Training in Hermitage, TN: Expert In-Home Services"),
-    ("dog-training-donelson-tn",              "Dog Training in Donelson, TN: Nashville's Eastside Dog Trainers"),
-    ("dog-training-bellevue-tn",              "Dog Training in Bellevue, TN: West Nashville's Top Trainer Guide"),
-    ("how-to-stop-dog-whining",               "How to Stop Your Dog Whining: A Nashville Trainer's Guide"),
-    ("how-to-stop-dog-digging",               "Stop Your Dog Digging Up the Yard: Nashville Fix-It Guide"),
-    ("how-to-stop-dog-chasing-cats",          "How to Stop Your Dog Chasing Cats: Training Steps That Work"),
-    ("how-to-stop-dog-stealing-food",         "Stop Your Dog Stealing Food: Counter Management and Training"),
-    ("how-to-stop-dog-running-away",          "Stop Your Dog Running Away: Reliable Recall and Fence Training"),
-    ("how-to-stop-dog-excessive-licking",     "Excessive Licking in Dogs: Causes and Training Solutions"),
-    ("how-to-train-dog-to-stay-in-yard",      "How to Train Your Dog to Stay in the Yard Without a Fence"),
-    ("how-to-train-dog-to-use-doggie-door",   "How to Train Your Dog to Use a Doggie Door"),
-    ("how-to-train-dog-for-car-rides",        "Car Ride Training: How to Help Your Dog Love Road Trips"),
-    ("how-to-train-dog-around-bicycles",      "How to Train Your Dog Not to Chase Bicycles"),
-    ("dog-body-language-guide-nashville",     "Dog Body Language: What Your Dog Is Really Telling You"),
-    ("why-dogs-dont-listen-nashville",        "Why Your Dog Won't Listen: A Nashville Trainer's Honest Answer"),
-    ("clicker-training-basics-nashville",     "Clicker Training Basics: Getting Started in Nashville"),
-    ("lure-reward-training-guide",            "Lure and Reward Training: A Step-by-Step Nashville Guide"),
-    ("building-focus-with-your-dog",          "Building Focus in Your Dog: Attention Exercises That Actually Work"),
-    ("dog-training-with-high-value-treats",   "High-Value Treats in Dog Training: What They Are and When to Use Them"),
-    ("dog-training-without-treats-nashville", "Can You Train a Dog Without Treats? Nashville Trainer Weighs In"),
-    ("how-to-socialize-adult-dog-nashville",  "How to Socialize an Adult Dog: It's Not Too Late"),
-    ("dog-fear-of-loud-noises-training",      "Helping Dogs Overcome Fear of Loud Noises: Nashville Guide"),
-    ("dog-fear-of-strangers-training",        "Training a Dog Fearful of Strangers: A Compassionate Approach"),
-    ("dog-thunderstorm-anxiety-solutions",    "Dog Thunderstorm Anxiety: Nashville Trainer's Calming Strategies"),
-    ("dog-training-for-veterans-nashville",   "Dog Training for Veterans in Nashville: Discipline and Bond"),
-    ("dog-training-senior-owners-nashville",  "Dog Training for Senior Owners in Nashville: Practical Solutions"),
-    ("dog-training-shy-introverted-dogs",     "Training Shy and Introverted Dogs: Patience-First Nashville Guide"),
-    ("benefits-of-obedience-training-dogs",   "10 Life-Changing Benefits of Obedience Training for Your Dog"),
-    ("dog-training-roi-nashville",            "Is Dog Training Worth the Investment? A Nashville Cost-Benefit Guide"),
-    ("how-to-find-best-dog-trainer-nashville","How to Find the Best Dog Trainer in Nashville, TN"),
-    ("questions-to-ask-dog-trainer-nashville","Questions to Ask Before Hiring a Dog Trainer in Nashville"),
-    ("dog-training-red-flags-to-avoid",       "Dog Training Red Flags: What to Avoid When Hiring a Trainer"),
-    ("nashville-dog-owner-community-guide",   "Nashville Dog Owner's Community Guide: Resources and Tips"),
+# Base templates that get combined with modifiers
+PROBLEMS = [
+    "jumping", "barking", "biting", "pulling", "lunging", "chewing",
+    "digging", "whining", "growling", "aggression", "anxiety", "fear",
+    "reactivity", "leash pulling", "counter surfing", "door dashing",
+    "food guarding", "toy guarding", "nipping", "mouthing"
 ]
 
+SITUATIONS = [
+    "on walks", "at home", "around guests", "around other dogs",
+    "around kids", "at the door", "during meals", "at night",
+    "when alone", "in the car", "at the vet", "at the groomer",
+    "in public", "off leash", "on leash", "around strangers"
+]
 
-def slug_to_title(slug: str) -> str:
-    return slug.replace("-", " ").title()
+BREEDS = [
+    "german shepherd", "golden retriever", "labrador", "pit bull",
+    "rottweiler", "husky", "beagle", "bulldog", "poodle", "boxer",
+    "dachshund", "chihuahua", "yorkie", "shih tzu", "great dane",
+    "doberman", "australian shepherd", "border collie", "corgi",
+    "french bulldog", "maltese", "cocker spaniel", "bernese mountain dog",
+    "cavalier king charles", "miniature schnauzer", "boston terrier",
+    "havanese", "pomeranian", "shetland sheepdog", "vizsla",
+    "weimaraner", "rhodesian ridgeback", "akita", "alaskan malamute",
+    "basset hound", "bloodhound", "bichon frise", "cane corso",
+    "english mastiff", "irish setter", "jack russell terrier",
+    "papillon", "samoyed", "scottish terrier", "west highland terrier"
+]
 
+AGES = [
+    "puppy", "8 week old", "10 week old", "12 week old", "4 month old",
+    "6 month old", "1 year old", "2 year old", "adult", "senior",
+    "older dog", "young dog", "adolescent"
+]
 
-def load_used() -> set:
-    if TRACKER.exists():
-        with open(TRACKER) as f:
-            return set(json.load(f))
-    return set()
+NASHVILLE_AREAS = [
+    "nashville", "franklin", "brentwood", "murfreesboro", "hendersonville",
+    "gallatin", "spring hill", "mt juliet", "smyrna", "la vergne",
+    "lebanon", "goodlettsville", "white house", "antioch", "bellevue",
+    "green hills", "hermitage", "madison", "nolensville", "thompsons station",
+    "clarksville", "dickson", "columbia", "east nashville", "west nashville",
+    "germantown nashville", "the gulch", "sylvan park", "12 south",
+    "berry hill", "oak hill", "forest hills", "belle meade",
+    "donelson", "old hickory", "inglewood", "east nashville", "bordeaux",
+    "joelton", "whites creek", "pegram", "kingston springs", "fairview",
+    "pleasant view", "greenbrier", "springfield", "portland", "westmoreland",
+    "hartsville", "carthage", "watertown", "smithville", "mcminnville",
+    "tullahoma", "shelbyville", "lewisburg", "chapel hill", "eagleville",
+    "rockvale", "christiana", "lascassas", "woodbury", "manchester",
+    "37201", "37203", "37204", "37205", "37206", "37207", "37208", "37209",
+    "37210", "37211", "37212", "37214", "37215", "37216", "37217", "37218",
+    "37219", "37220", "37221", "37027", "37064", "37067", "37069"
+]
 
+SERVICES = [
+    "puppy training", "obedience training", "behavior modification",
+    "aggression training", "anxiety training", "leash training",
+    "crate training", "potty training", "off leash training",
+    "protection dog training", "service dog training", "therapy dog training",
+    "board and train", "private lessons", "group classes",
+    "in home training", "online dog training", "virtual dog training"
+]
 
-def save_used(used: set):
-    with open(TRACKER, "w") as f:
-        json.dump(sorted(used), f, indent=2)
+COMMANDS = [
+    "sit", "stay", "come", "heel", "down", "place", "off", "leave it",
+    "drop it", "wait", "go to bed", "touch", "shake", "roll over",
+    "speak", "quiet", "fetch", "bring it", "release", "free"
+]
 
+def slugify(text):
+    text = text.lower().strip()
+    text = re.sub(r'[^\w\s-]', '', text)
+    text = re.sub(r'[\s_-]+', '-', text)
+    return text[:60]
 
-# ── HTML template ──────────────────────────────────────────────────────────
+def generate_title_variations():
+    """Generate thousands of unique titles"""
+    titles = []
 
-def build_post_html(slug: str, title: str, date_str: str) -> str:
-    """Generate a full SEO-optimized HTML blog post."""
+    # Pattern: how to stop [breed] from [problem]
+    for breed in BREEDS:
+        for problem in PROBLEMS[:10]:
+            titles.append(f"how to stop {breed} from {problem}")
 
-    # derive a meta description from the title
-    meta_desc = f"{title} | Expert advice from Nashville's trusted in-home dog trainers."
+    # Pattern: [breed] [problem] [situation]
+    for breed in BREEDS[:20]:
+        for problem in PROBLEMS[:10]:
+            for situation in SITUATIONS[:5]:
+                titles.append(f"{breed} {problem} {situation}")
 
-    # Build body content paragraphs keyed off the slug topic
-    h2_sections = build_sections(slug, title)
+    # Pattern: [age] [breed] training tips
+    for age in AGES:
+        for breed in BREEDS:
+            titles.append(f"{age} {breed} training tips")
 
-    sections_html = ""
-    for h2, paragraphs in h2_sections:
-        sections_html += f"    <h2>{h2}</h2>\n"
-        for p in paragraphs:
-            sections_html += f"    <p>{p}</p>\n"
+    # Pattern: dog training [nashville area]
+    for area in NASHVILLE_AREAS:
+        titles.append(f"dog training {area}")
+        titles.append(f"puppy training {area}")
+        titles.append(f"dog obedience classes {area}")
+        titles.append(f"in home dog training {area}")
+        titles.append(f"private dog trainer {area}")
+        titles.append(f"best dog trainer {area}")
+        titles.append(f"affordable dog training {area}")
 
-    schema = json.dumps({
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": title,
-        "datePublished": date_str,
-        "dateModified": date_str,
-        "author": {
-            "@type": "Organization",
-            "name": "Nashville Dog Training"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "Nashville Dog Training",
-            "url": SITE_URL
-        },
-        "url": f"{SITE_URL}/blog/{slug}/",
-        "description": meta_desc
-    }, indent=2)
+    # Pattern: how to teach [breed] to [command]
+    for breed in BREEDS[:15]:
+        for command in COMMANDS:
+            titles.append(f"how to teach {breed} to {command}")
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title} | Nashville Dog Training</title>
-<meta name="description" content="{meta_desc}">
-<link rel="canonical" href="{SITE_URL}/blog/{slug}/">
-<meta name="geo.region" content="US-TN">
-<meta name="geo.placename" content="Nashville">
-<meta property="og:title" content="{title}">
-<meta property="og:description" content="{meta_desc}">
-<meta property="og:type" content="article">
-<meta property="og:url" content="{SITE_URL}/blog/{slug}/">
-<script type="application/ld+json">
-{schema}
-</script>
-<style>
-  body {{ font-family: Georgia, serif; max-width: 780px; margin: 0 auto; padding: 1.5rem; color: #222; line-height: 1.75; }}
-  h1 {{ font-size: 2rem; color: #1a3c5e; margin-bottom: .25rem; }}
-  h2 {{ font-size: 1.35rem; color: #1a3c5e; margin-top: 2rem; }}
-  .meta {{ color: #666; font-size: .9rem; margin-bottom: 2rem; }}
-  .cta-box {{ background: #1a3c5e; color: #fff; padding: 1.5rem; border-radius: 8px; text-align: center; margin: 2.5rem 0; }}
-  .cta-box a {{ background: #f0a500; color: #fff; padding: .75rem 1.75rem; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.1rem; }}
-  nav a {{ color: #1a3c5e; margin-right: 1rem; }}
-  footer {{ border-top: 1px solid #ddd; margin-top: 3rem; padding-top: 1rem; color: #666; font-size: .85rem; }}
-</style>
-</head>
-<body>
-<nav><a href="/">Home</a><a href="/blog/">Blog</a></nav>
-<article>
-  <h1>{title}</h1>
-  <p class="meta">By Nashville Dog Training &bull; {datetime.strptime(date_str, "%Y-%m-%d").strftime("%B %d, %Y")} &bull; Nashville, TN</p>
+    # Pattern: why does my [breed] [problem]
+    for breed in BREEDS[:20]:
+        for problem in PROBLEMS:
+            titles.append(f"why does my {breed} {problem}")
 
-{sections_html}
-  <div class="cta-box">
-    <p style="font-size:1.15rem;margin-bottom:1rem;">Ready to transform your dog's behavior? We serve Nashville, Franklin, Brentwood, Murfreesboro, and surrounding areas.</p>
-    <a href="/">Book a Free Consultation</a>
-  </div>
-</article>
-<footer>
-  <p>&copy; {datetime.now().year} Nashville Dog Training &bull; In-home dog training serving Greater Nashville, TN</p>
-  <p><a href="/">Home</a> &bull; <a href="/blog/">Blog</a></p>
-</footer>
-</body>
-</html>
-"""
+    # Pattern: [problem] in [age] dogs
+    for problem in PROBLEMS:
+        for age in AGES:
+            titles.append(f"{problem} in {age} dogs")
 
+    # Pattern: [service] [nashville area]
+    for service in SERVICES:
+        for area in NASHVILLE_AREAS:
+            titles.append(f"{service} {area}")
 
-def build_sections(slug: str, title: str):
-    """Return a list of (h2_heading, [paragraph, ...]) tuples based on slug keywords."""
+    # Pattern: [breed] [service] near me
+    for breed in BREEDS[:25]:
+        for service in SERVICES[:8]:
+            titles.append(f"{breed} {service} near me")
 
-    # Generic structured content built from the title/slug
-    topic_words = slug.replace("-", " ")
-    location_rotation = [
-        "Nashville", "Franklin", "Brentwood", "Murfreesboro",
-        "Hendersonville", "Mt. Juliet", "Spring Hill", "Smyrna"
-    ]
+    # Pattern: best [service] for [breed]
+    for service in SERVICES[:10]:
+        for breed in BREEDS[:20]:
+            titles.append(f"best {service} for {breed}")
 
-    sections = [
-        (
-            f"Why {title.split(':')[0]} Matters",
-            [
-                f"Whether you're a first-time dog owner or a seasoned pro, mastering {topic_words} is one of the "
-                f"most impactful things you can do for your dog's quality of life. At Nashville Dog Training we work "
-                f"with hundreds of families across the greater Nashville metro every year, and this topic comes up "
-                f"constantly in our in-home consultations.",
-                f"Dogs thrive on structure, clear communication, and consistent expectations. Understanding the "
-                f"fundamentals behind {topic_words} gives you the foundation to build a relationship based on "
-                f"mutual trust — not frustration."
-            ]
-        ),
-        (
-            "The Science Behind the Skill",
-            [
-                "Modern dog training is grounded in behavioral science. Dogs learn primarily through operant "
-                "conditioning — they repeat behaviors that are rewarded and avoid behaviors that lead to "
-                "unpleasant outcomes. Timing, consistency, and clear criteria are the three pillars of every "
-                "successful training session.",
-                f"When we address {topic_words} in our Nashville in-home programs, we tailor the approach to "
-                "your dog's individual temperament, age, and history. A fearful rescue responds differently than "
-                "a confident working-breed puppy, and a skilled trainer knows how to adjust."
-            ]
-        ),
-        (
-            "Step-by-Step: Getting Started",
-            [
-                "Start every session with a calm, focused dog. Keep initial sessions short — 5 to 10 minutes "
-                "is ideal for most dogs. End on a success, even if you have to make it easy.",
-                f"For {topic_words}, break the skill down into the smallest possible steps. Reward each "
-                "tiny improvement (called 'shaping'). Once the dog is offering the behavior reliably in a low-"
-                "distraction environment, gradually add duration, distance, and distractions — in that order.",
-                "Use a consistent marker word ('yes!') or clicker at the exact moment the correct behavior "
-                "occurs, then follow immediately with a high-value reward. Precision in timing is more important "
-                "than the value of the treat."
-            ]
-        ),
-        (
-            "Common Mistakes Nashville Dog Owners Make",
-            [
-                "Inconsistency is the number-one training killer. If the rule is 'no jumping,' that rule must "
-                "apply with every family member, every guest, every time — or the dog learns that jumping "
-                "sometimes works, which makes it much harder to extinguish.",
-                f"When working on {topic_words}, avoid repeating commands. Say it once, clearly, and help the "
-                "dog succeed if needed. Repeating 'sit, sit, sit' teaches your dog to wait for the third cue.",
-                "Finally, don't train when you're frustrated. Dogs read your emotional state. If a session "
-                "isn't going well, end it on a simple win and come back tomorrow."
-            ]
-        ),
-        (
-            f"{topic_words.title()} in Real-World Nashville Environments",
-            [
-                f"Practicing {topic_words} at home is a great start, but the real test is out in the world. "
-                f"Nashville has excellent options for proofing your dog's skills: Shelby Bottoms Greenway, "
-                f"Centennial Dog Park, Edwin Warner Park, and busy neighborhood streets in East Nashville or "
-                f"12South are all fantastic training grounds.",
-                "Start at a distance from distractions and gradually close the gap as your dog's skills improve. "
-                "A dog that ignores a squirrel from 50 feet away isn't ready to ignore one from 5 feet — work "
-                "up to it systematically."
-            ]
-        ),
-        (
-            "When to Call a Professional Nashville Dog Trainer",
-            [
-                "Some behaviors are best addressed with professional guidance, especially aggression, severe "
-                "reactivity, or deep-rooted fear. Attempting to work through these without experience can "
-                "inadvertently make them worse.",
-                f"Our in-home trainers serve all of the greater Nashville area — including {', '.join(location_rotation[:5])} "
-                f"and beyond. We offer a free consultation so you can see our approach before committing. "
-                f"Most owners are surprised how quickly they see results when they have expert guidance.",
-                "Don't wait until a behavior becomes dangerous. Early intervention is almost always faster, "
-                "easier, and less expensive than trying to fix a deeply ingrained problem later."
-            ]
-        ),
-        (
-            "Frequently Asked Questions",
-            [
-                f"<strong>How long will it take to see results with {topic_words}?</strong> Most dogs show "
-                "noticeable improvement within the first 1–3 sessions when owners apply what they learn "
-                "consistently between visits.",
-                "<strong>Do you use punishment-based methods?</strong> We use a balanced approach — "
-                "positive reinforcement drives the majority of our teaching, with clear, fair consequences "
-                "when needed. We never use methods that cause fear, pain, or shut down a dog's personality.",
-                f"<strong>Can you train my dog even if we live outside Nashville proper?</strong> Yes — "
-                f"we travel throughout the greater Nashville metro. Reach out to confirm coverage for your area."
-            ]
-        ),
-    ]
-    return sections
+    # Pattern: [age] dog [problem] help
+    for age in AGES:
+        for problem in PROBLEMS:
+            titles.append(f"{age} dog {problem} help")
 
+    # Pattern: how much does [service] cost
+    for service in SERVICES:
+        titles.append(f"how much does {service} cost")
+        titles.append(f"{service} prices nashville")
 
-# ── sitemap updater ────────────────────────────────────────────────────────
+    return list(set(titles))
 
-def update_sitemap(new_slugs: list[str], date_str: str):
-    content = SITEMAP.read_text()
-    insert_before = "</urlset>"
-    new_entries = ""
-    for slug in new_slugs:
-        url = f"{SITE_URL}/blog/{slug}/"
-        if url not in content:
-            new_entries += (
-                f"  <url>\n"
-                f"    <loc>{url}</loc>\n"
-                f"    <lastmod>{date_str}</lastmod>\n"
-                f"    <changefreq>monthly</changefreq>\n"
-                f"    <priority>0.7</priority>\n"
-                f"  </url>\n"
-            )
-    if new_entries:
-        content = content.replace(insert_before, new_entries + insert_before)
-        SITEMAP.write_text(content)
+def create_post(title, output_dir):
+    """Create a single blog post"""
+    slug = slugify(title)
+    output_path = output_dir / f"{slug}.html"
 
+    if output_path.exists():
+        return None
 
-# ── blog index updater ─────────────────────────────────────────────────────
+    # Read template
+    template_path = output_dir / "template.html"
+    if not template_path.exists():
+        return None
 
-BLOG_INDEX = BLOG_DIR / "index.html"
+    template = template_path.read_text()
 
-def rebuild_blog_index():
-    posts = sorted(BLOG_DIR.glob("*/index.html"))
-    items = ""
-    for post_path in reversed(posts):
-        slug = post_path.parent.name
-        # read title from file
-        html = post_path.read_text()
-        m = re.search(r"<h1>(.*?)</h1>", html)
-        title = m.group(1) if m else slug_to_title(slug)
-        m2 = re.search(r"<meta name=\"description\" content=\"(.*?)\"", html)
-        desc = m2.group(1) if m2 else ""
-        m3 = re.search(r"By Nashville Dog Training &bull; (.*?) &bull;", html)
-        date_display = m3.group(1) if m3 else ""
-        items += (
-            f'  <li>\n'
-            f'    <a href="/blog/{slug}/"><strong>{title}</strong></a>\n'
-            f'    <span class="date">{date_display}</span>\n'
-            f'    <p>{desc}</p>\n'
-            f'  </li>\n'
-        )
+    # Generate content
+    display_title = title.title().replace("Tn", "TN")
+    date = datetime.now().strftime("%B %d, %Y")
+    meta_desc = f"Expert guide to {title}. Professional dog training tips from Nashville's trusted trainers. Free consultation available."[:160]
+    keywords = f"dog training, {title}, Nashville dog training, {title.split()[0]} training"
 
-    BLOG_INDEX.write_text(f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dog Training Blog | Nashville Dog Training Tips & Guides</title>
-<meta name="description" content="Nashville Dog Training blog: expert tips, how-to guides, and local insights for Nashville, TN dog owners.">
-<link rel="canonical" href="{SITE_URL}/blog/">
-<style>
-  body {{ font-family: Georgia, serif; max-width: 780px; margin: 0 auto; padding: 1.5rem; color: #222; line-height: 1.75; }}
-  h1 {{ color: #1a3c5e; }}
-  ul {{ list-style: none; padding: 0; }}
-  li {{ border-bottom: 1px solid #eee; padding: 1rem 0; }}
-  a {{ color: #1a3c5e; text-decoration: none; }}
-  a:hover {{ text-decoration: underline; }}
-  .date {{ color: #888; font-size: .85rem; margin-left: .5rem; }}
-  p {{ margin: .3rem 0 0; color: #555; font-size: .95rem; }}
-  nav a {{ margin-right: 1rem; }}
-</style>
-</head>
-<body>
-<nav><a href="/">Home</a><a href="/blog/">Blog</a></nav>
-<h1>Nashville Dog Training Blog</h1>
-<p>Expert tips, how-to guides, and local Nashville insights for dog owners across the greater Nashville metro.</p>
-<ul>
-{items}</ul>
-</body>
-</html>
-""")
+    content = f"""<p>If you're searching for help with {title}, you've come to the right place. This is one of the most common challenges we help Nashville dog owners overcome.</p>
 
+<p>In this comprehensive guide, we'll break down exactly what's causing the issue and give you practical, actionable steps to fix it. These are the same techniques we use in our in-home training sessions throughout Nashville, Franklin, Brentwood, and the greater Middle Tennessee area.</p>
 
-# ── main ───────────────────────────────────────────────────────────────────
+<h2>Understanding the Issue</h2>
+<p>The first step to solving any training challenge is understanding why it's happening. Dogs don't misbehave out of spite - there's always an underlying cause, whether it's lack of training, anxiety, overexcitement, or simply not understanding what we want from them.</p>
+
+<h2>The Solution</h2>
+<p>Here's what we recommend for addressing {title.lower()}:</p>
+<ol>
+<li><strong>Identify the trigger</strong> - What specifically sets off the behavior?</li>
+<li><strong>Manage the environment</strong> - Set your dog up for success by controlling the situation</li>
+<li><strong>Train an alternative</strong> - Give your dog something appropriate to do instead</li>
+<li><strong>Be consistent</strong> - Everyone in the household follows the same rules</li>
+<li><strong>Be patient</strong> - Real behavior change takes 2-4 weeks of consistent practice</li>
+</ol>
+
+<h2>When to Get Professional Help</h2>
+<p>While many issues can be addressed at home with consistent training, some situations benefit from professional guidance. If you're in the Nashville area and want faster results with expert support, our in-home training sessions are designed for exactly these challenges.</p>
+
+<p>We serve Nashville, Franklin, Brentwood, Murfreesboro, Hendersonville, and the entire Middle Tennessee region. Contact us for a free consultation to discuss your specific situation.</p>"""
+
+    # Fill template
+    html = template.replace("{{TITLE}}", display_title)
+    html = html.replace("{{META_DESCRIPTION}}", meta_desc)
+    html = html.replace("{{KEYWORDS}}", keywords)
+    html = html.replace("{{SLUG}}", slug)
+    html = html.replace("{{DATE}}", date)
+    html = html.replace("{{SHORT_TITLE}}", display_title[:40])
+    html = html.replace("{{CONTENT}}", content)
+
+    output_path.write_text(html)
+    return {"slug": slug, "title": display_title, "url": f"https://magsbrother.github.io/nashvilledogtraining/blog/{slug}.html"}
 
 def main():
-    BLOG_DIR.mkdir(exist_ok=True)
+    blog_dir = Path(__file__).parent.parent / "blog"
+    titles = generate_title_variations()
+    print(f"Generated {len(titles)} unique title combinations")
 
-    used = load_used()
-    available = [(s, t) for s, t in TOPICS if s not in used]
+    created = 0
+    for title in titles:
+        result = create_post(title, blog_dir)
+        if result:
+            created += 1
+            if created % 100 == 0:
+                print(f"Created {created} posts...")
 
-    if not available:
-        print("All topics exhausted — no new posts generated.")
-        sys.exit(0)
+    print(f"\nTotal new posts created: {created}")
 
-    to_generate = available[:POSTS_PER_RUN]
-    base_date = datetime.now()
-    new_slugs = []
+    # Update sitemap
+    sitemap_path = Path(__file__).parent.parent / "sitemap.xml"
+    posts = list(blog_dir.glob("*.html"))
+    posts = [p for p in posts if p.name not in ["template.html", "index.html"]]
 
-    for i, (slug, title) in enumerate(to_generate):
-        post_date = (base_date - timedelta(days=len(to_generate) - 1 - i)).strftime("%Y-%m-%d")
-        post_dir = BLOG_DIR / slug
-        post_dir.mkdir(exist_ok=True)
-        html = build_post_html(slug, title, post_date)
-        (post_dir / "index.html").write_text(html)
-        used.add(slug)
-        new_slugs.append(slug)
-        print(f"  [{i+1:02d}/{len(to_generate)}] {slug}")
+    urls = set()
+    urls.add("https://magsbrother.github.io/nashvilledogtraining/")
+    urls.add("https://magsbrother.github.io/nashvilledogtraining/blog/")
+    for post in posts:
+        urls.add(f"https://magsbrother.github.io/nashvilledogtraining/blog/{post.name}")
 
-    save_used(used)
-    update_sitemap(new_slugs, base_date.strftime("%Y-%m-%d"))
-    rebuild_blog_index()
+    header = '''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'''
+    entries = []
+    for url in sorted(urls):
+        priority = '1.0' if 'blog' not in url else '0.7'
+        entries.append(f'''  <url>
+    <loc>{url}</loc>
+    <lastmod>2026-03-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>{priority}</priority>
+  </url>''')
+    footer = '</urlset>'
+    sitemap_path.write_text(header + '\n' + '\n'.join(entries) + '\n' + footer)
+    print(f"Updated sitemap with {len(urls)} URLs")
 
-    print(f"\nDone. {len(new_slugs)} posts written to {BLOG_DIR}")
-    print(f"Topics remaining: {len([s for s, _ in TOPICS if s not in used])} / {len(TOPICS)}")
+    # Update blog index
+    post_items = []
+    for post in sorted(posts, key=lambda x: x.stat().st_mtime, reverse=True)[:500]:
+        content = post.read_text()
+        title_match = re.search(r'<h1>(.+?)</h1>', content)
+        title = title_match.group(1) if title_match else post.stem.replace("-", " ").title()
+        post_items.append(f'<li><a href="{post.name}">{title}</a></li>')
 
+    index_path = blog_dir / "index.html"
+    index_content = index_path.read_text()
+    # Update just the list
+    new_list = "\n".join(post_items)
+    index_content = re.sub(r'<ul>.*?</ul>', f'<ul>\n{new_list}\n</ul>', index_content, flags=re.DOTALL)
+    index_path.write_text(index_content)
+    print(f"Updated blog index")
 
 if __name__ == "__main__":
     main()

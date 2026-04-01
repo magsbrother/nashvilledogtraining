@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MG4MDWH5CV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MG4MDWH5CV');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nashville Dog Training | In-Home Obedience & Behavior Training</title>
@@ -11,7 +19,7 @@
 <meta property="og:type" content="website">
 
 <!-- Canonical URL (update when deployed) -->
-<link rel="canonical" href="https://www.example.com/">
+<link rel="canonical" href="https://magsbrother.github.io/nashvilledogtraining/">
 
 <!-- Geo Tags -->
 <meta name="geo.region" content="US-TN">
@@ -29,8 +37,8 @@
   "@type": ["LocalBusiness", "PetService"],
   "name": "Nashville Dog Training",
   "description": "Nashville's premier in-home dog training. Balanced obedience training that builds trust, respect, and real-world manners. Free consultation — serving the greater Nashville area.",
-  "url": "https://www.example.com/",
-  "telephone": "(615) XXX-XXXX",
+  "url": "https://magsbrother.github.io/nashvilledogtraining/",
+  "telephone": "(203) 570-0531",
   "priceRange": "$$",
   "areaServed": {
     "@type": "Place",
@@ -63,13 +71,6 @@
       "addressRegion": "TN"
     }
   ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "5.0",
-    "ratingCount": "500",
-    "bestRating": "5",
-    "worstRating": "1"
-  },
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Nashville",
@@ -926,6 +927,7 @@ h1, h2, h3, h4 {
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="#D4A745" stroke-width="1.5"/><path d="M9 17c1-3 3-5 5-5s4 2 5 5" stroke="#D4A745" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="11" r="1.5" fill="#D4A745"/><circle cx="17" cy="11" r="1.5" fill="#D4A745"/></svg>
       <span>Nashville Dog Training</span>
     </a>
+    <a href="blog/" style="color:var(--cream);text-decoration:none;font-weight:500;margin-right:20px;">Training Tips</a>
     <a href="#consult" class="nav-cta">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       <span>Free Consultation</span>
@@ -955,12 +957,12 @@ h1, h2, h3, h4 {
       <div class="hero-visual">
         <div class="hero-visual-ring">
           <div class="hero-stat-float" style="top:10%;right:-10%">
-            <span class="stat-num">500+</span>
-            <span class="stat-label">Dogs Trained</span>
+            <span class="stat-num">1-on-1</span>
+            <span class="stat-label">In-Home Sessions</span>
           </div>
           <div class="hero-stat-float" style="bottom:15%;left:-5%">
-            <span class="stat-num">5.0</span>
-            <span class="stat-label">Google Rating</span>
+            <span class="stat-num">Free</span>
+            <span class="stat-label">Consultation</span>
           </div>
           <svg class="hero-visual-icon" width="120" height="120" viewBox="0 0 120 120" fill="none">
             <path d="M60 20c-8 0-15 4-20 10s-10 15-10 25c0 18 12 30 30 40 18-10 30-22 30-40 0-10-5-19-10-25s-12-10-20-10z" stroke="currentColor" stroke-width="2.5" fill="none"/>
@@ -1058,8 +1060,8 @@ h1, h2, h3, h4 {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div>
-            <h4>Online Course Access</h4>
-            <p>Detailed paperwork and an online course so you can keep reinforcing at your own pace.</p>
+            <h4>Flexible Scheduling</h4>
+            <p>Sessions at times that work for you. Evenings and weekends available.</p>
           </div>
         </div>
         <div class="benefit-item reveal">
@@ -1117,9 +1119,9 @@ h1, h2, h3, h4 {
 <section class="testimonials">
   <div class="container">
     <div style="text-align:center" class="reveal">
-      <div class="section-label" style="justify-content:center">Real Results</div>
-      <h2 class="section-title">Nashville Dog Owners Love Us</h2>
-      <p class="section-sub" style="margin-left:auto;margin-right:auto">Don't just take our word for it.</p>
+      <div class="section-label" style="justify-content:center">What To Expect</div>
+      <h2 class="section-title">Transform Your Dog's Behavior</h2>
+      <p class="section-sub" style="margin-left:auto;margin-right:auto">Results that speak for themselves.</p>
     </div>
     <div class="testimonial-grid">
       <div class="testimonial-card reveal">
@@ -1267,6 +1269,7 @@ h1, h2, h3, h4 {
 <footer class="footer">
   <div class="container">
     <p class="footer-area">Serving Nashville, Franklin, Brentwood, Murfreesboro &amp; the Greater Nashville Area</p>
+    <p style="margin:12px 0"><a href="blog/" style="color:var(--gold);text-decoration:none">Training Tips & Guides</a> &bull; <a href="tel:2035700531" style="color:inherit;text-decoration:none">(203) 570-0531</a></p>
     <p>&copy; 2026 Nashville Dog Training. All rights reserved.</p>
   </div>
 </footer>
@@ -1308,10 +1311,7 @@ const ctaObserver = new IntersectionObserver(([entry]) => {
 }, { threshold: 0.1 });
 ctaObserver.observe(formSection);
 
-// Form handling
-// REPLACE: Connect this to Google Forms or Formspree
-// Example Formspree: change the fetch URL to https://formspree.io/f/YOUR_ID
-// Example Google Forms: use a hidden iframe submission
+// Form handling - sends to FormSubmit.co (free, no signup)
 function handleSubmit(e) {
   e.preventDefault();
   const form = document.getElementById('leadForm');
@@ -1330,13 +1330,34 @@ function handleSubmit(e) {
   btn.innerHTML = 'Sending...';
   btn.disabled = true;
 
-  // Simulate submission — REPLACE with actual endpoint
-  setTimeout(() => {
+  // Collect form data
+  const formData = new FormData(form);
+  formData.append('_subject', 'New Lead: Nashville Dog Training');
+  formData.append('_captcha', 'false');
+  formData.append('_template', 'table');
+
+  // Submit to FormSubmit.co
+  fetch('https://formsubmit.co/ajax/2b7859e4fec638adda6683d2b38617d4', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
     form.style.display = 'none';
     document.querySelector('.form-sub').style.display = 'none';
     document.querySelector('.form-card h3').style.display = 'none';
     success.style.display = 'block';
-  }, 800);
+  })
+  .catch(error => {
+    // Show error with phone fallback
+    btn.innerHTML = 'Something went wrong';
+    btn.disabled = false;
+    btn.style.background = '#c0392b';
+    const errorMsg = document.createElement('p');
+    errorMsg.style.cssText = 'color:#c0392b;margin-top:12px;font-size:0.9rem;';
+    errorMsg.innerHTML = 'Please try again or call us at <a href="tel:2035700531" style="color:#c0392b;font-weight:600;">(203) 570-0531</a>';
+    btn.parentNode.insertBefore(errorMsg, btn.nextSibling);
+  });
 
   return false;
 }
