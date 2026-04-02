@@ -153,6 +153,69 @@ def generate_title_variations():
         titles.append(f"how much does {service} cost")
         titles.append(f"{service} prices nashville")
 
+    # NEW Pattern 1: is [breed] easy to train
+    for breed in BREEDS:
+        titles.append(f"is {breed} easy to train")
+        titles.append(f"is {breed} hard to train")
+        titles.append(f"how to train a {breed} for beginners")
+
+    # NEW Pattern 2: rescued [breed] training / adopted dog training
+    for breed in BREEDS:
+        titles.append(f"rescued {breed} training tips")
+        titles.append(f"adopted {breed} behavior problems")
+        titles.append(f"training a rescue {breed}")
+
+    # NEW Pattern 3: [breed] training mistakes
+    for breed in BREEDS[:25]:
+        titles.append(f"{breed} training mistakes to avoid")
+        titles.append(f"common {breed} training mistakes")
+
+    # NEW Pattern 4: how to train [breed] with positive reinforcement
+    for breed in BREEDS:
+        titles.append(f"how to train {breed} with positive reinforcement")
+        titles.append(f"reward based training for {breed}")
+
+    # NEW Pattern 5: [breed] off leash training
+    for breed in BREEDS:
+        titles.append(f"{breed} off leash training nashville")
+        titles.append(f"how to train {breed} off leash")
+
+    # NEW Pattern 6: [problem] after adopting a dog
+    for problem in PROBLEMS:
+        titles.append(f"{problem} after adopting a dog")
+        titles.append(f"newly adopted dog {problem} help")
+        titles.append(f"rescue dog {problem} solutions")
+
+    # NEW Pattern 7: dog training tips for [season/occasion]
+    OCCASIONS = [
+        "the holidays", "christmas", "thanksgiving", "fourth of july",
+        "new years", "halloween", "summer", "winter", "spring", "fall",
+        "thunderstorms", "fireworks", "house guests", "moving to a new home",
+        "having a baby", "introducing a new pet", "camping", "travel"
+    ]
+    for occasion in OCCASIONS:
+        titles.append(f"dog training tips for {occasion}")
+        titles.append(f"how to calm dog during {occasion}")
+        titles.append(f"dog anxiety during {occasion}")
+
+    # NEW Pattern 8: [breed] not listening help
+    for breed in BREEDS:
+        titles.append(f"{breed} not listening help")
+        titles.append(f"why wont my {breed} listen")
+        titles.append(f"{breed} ignoring commands")
+
+    # NEW Pattern 9: how long does it take to train a [breed]
+    for breed in BREEDS:
+        titles.append(f"how long does it take to train a {breed}")
+        titles.append(f"how long to potty train a {breed}")
+        titles.append(f"{breed} training timeline")
+
+    # NEW Pattern 10: [breed] socialization tips
+    for breed in BREEDS:
+        titles.append(f"{breed} socialization tips")
+        titles.append(f"how to socialize a {breed}")
+        titles.append(f"{breed} socialization nashville")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
