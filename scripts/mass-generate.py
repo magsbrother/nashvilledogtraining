@@ -216,6 +216,67 @@ def generate_title_variations():
         titles.append(f"how to socialize a {breed}")
         titles.append(f"{breed} socialization nashville")
 
+    # NEW Pattern 11: [breed] separation anxiety nashville / help
+    for breed in BREEDS:
+        titles.append(f"{breed} separation anxiety nashville")
+        titles.append(f"{breed} separation anxiety help")
+        titles.append(f"how to treat {breed} separation anxiety")
+
+    # NEW Pattern 12: [breed] first day home tips
+    for breed in BREEDS:
+        titles.append(f"{breed} first day home tips")
+        titles.append(f"bringing home a new {breed} tips")
+        titles.append(f"what to expect first week with {breed}")
+
+    # NEW Pattern 13: [breed] recall training
+    for breed in BREEDS:
+        titles.append(f"{breed} recall training tips")
+        titles.append(f"how to get {breed} to come when called")
+        titles.append(f"{breed} come command training")
+
+    # NEW Pattern 14: [breed] destructive behavior
+    for breed in BREEDS:
+        titles.append(f"{breed} destructive behavior help")
+        titles.append(f"why is my {breed} so destructive")
+        titles.append(f"stop {breed} destructive chewing")
+
+    # NEW Pattern 15: [breed] leash walking
+    for breed in BREEDS:
+        titles.append(f"train {breed} to walk on leash")
+        titles.append(f"{breed} leash walking tips")
+        titles.append(f"loose leash walking for {breed}")
+
+    # NEW Pattern 16: [problem] solutions for [breed] (top problems x top breeds)
+    TOP_BREEDS = BREEDS[:15]
+    TOP_PROBLEMS = PROBLEMS[:12]
+    for problem in TOP_PROBLEMS:
+        for breed in TOP_BREEDS:
+            titles.append(f"{problem} solutions for {breed}")
+            titles.append(f"how to fix {breed} {problem}")
+
+    # NEW Pattern 17: [breed] training schedule
+    for breed in BREEDS:
+        titles.append(f"{breed} training schedule week by week")
+        titles.append(f"{breed} daily training routine")
+
+    # NEW Pattern 18: [age] dog training schedule
+    for age in AGES:
+        titles.append(f"{age} dog training schedule")
+        titles.append(f"{age} dog training plan")
+        titles.append(f"how to train a {age} dog step by step")
+
+    # NEW Pattern 19: [breed] basic commands nashville
+    for breed in BREEDS:
+        titles.append(f"{breed} basic commands nashville")
+        titles.append(f"{breed} obedience training nashville")
+        titles.append(f"teach {breed} basic commands")
+
+    # NEW Pattern 20: dog training tips [problem] fast
+    for problem in PROBLEMS:
+        titles.append(f"how to stop dog {problem} fast")
+        titles.append(f"quick fix for dog {problem}")
+        titles.append(f"dog {problem} training tips that work")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
