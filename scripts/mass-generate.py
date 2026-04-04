@@ -216,6 +216,75 @@ def generate_title_variations():
         titles.append(f"how to socialize a {breed}")
         titles.append(f"{breed} socialization nashville")
 
+    # NEW Pattern 11: [breed] separation anxiety solutions
+    for breed in BREEDS:
+        titles.append(f"{breed} separation anxiety solutions")
+        titles.append(f"how to help {breed} with separation anxiety")
+        titles.append(f"{breed} alone time training")
+
+    # NEW Pattern 12: reactive dog training [area]
+    for area in NASHVILLE_AREAS:
+        titles.append(f"reactive dog training {area}")
+        titles.append(f"leash reactive dog trainer {area}")
+        titles.append(f"aggressive dog training {area}")
+
+    # NEW Pattern 13: [breed] crate training guide
+    for breed in BREEDS:
+        titles.append(f"{breed} crate training guide")
+        titles.append(f"how to crate train a {breed}")
+        titles.append(f"{breed} crate training problems")
+
+    # NEW Pattern 14: [problem] without punishment
+    for problem in PROBLEMS:
+        titles.append(f"how to stop dog {problem} without punishment")
+        titles.append(f"positive reinforcement for dog {problem}")
+        titles.append(f"fix dog {problem} fast")
+
+    # NEW Pattern 15: dog trainer [area] reviews
+    for area in NASHVILLE_AREAS:
+        titles.append(f"dog trainer {area} reviews")
+        titles.append(f"top rated dog trainer {area}")
+        titles.append(f"certified dog trainer {area}")
+
+    # NEW Pattern 16: [breed] fear and anxiety help
+    FEAR_TOPICS = [
+        "thunderstorm anxiety", "separation anxiety", "stranger anxiety",
+        "car anxiety", "vet anxiety", "loud noise fear", "other dog fear",
+        "resource guarding", "food aggression", "leash reactivity"
+    ]
+    for breed in BREEDS[:25]:
+        for topic in FEAR_TOPICS:
+            titles.append(f"{breed} {topic} help")
+
+    # NEW Pattern 17: how to stop [age] dog [problem]
+    for age in AGES:
+        for problem in PROBLEMS:
+            titles.append(f"how to stop {age} dog from {problem}")
+            titles.append(f"{age} dog keeps {problem} what to do")
+
+    # NEW Pattern 18: [service] cost nashville
+    for service in SERVICES:
+        titles.append(f"{service} cost nashville tn")
+        titles.append(f"average cost of {service} nashville")
+        titles.append(f"cheap {service} nashville")
+
+    # NEW Pattern 19: [breed] training before and after
+    for breed in BREEDS:
+        titles.append(f"{breed} transformation training story")
+        titles.append(f"training a difficult {breed}")
+        titles.append(f"{breed} extreme behavior makeover")
+
+    # NEW Pattern 20: dog training for [owner type]
+    OWNER_TYPES = [
+        "first time owners", "seniors", "families with kids", "busy professionals",
+        "apartment dwellers", "new parents", "retirees", "single owners",
+        "couples", "multi dog households", "large families", "dog lovers"
+    ]
+    for owner in OWNER_TYPES:
+        titles.append(f"dog training for {owner}")
+        titles.append(f"best dog breeds for {owner}")
+        titles.append(f"dog training tips for {owner}")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
