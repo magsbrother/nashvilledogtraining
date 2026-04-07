@@ -350,6 +350,65 @@ def generate_title_variations():
         titles.append(f"{breed} training facts vs myths")
         titles.append(f"what nobody tells you about training a {breed}")
 
+    # NEW Pattern 31: [breed] dog park behavior
+    for breed in BREEDS:
+        titles.append(f"{breed} dog park behavior tips")
+        titles.append(f"how to train {breed} to behave at dog park")
+        titles.append(f"{breed} dog park aggression solutions")
+
+    # NEW Pattern 32: [breed] and baby/toddler safety
+    for breed in BREEDS:
+        titles.append(f"training {breed} around babies and toddlers")
+        titles.append(f"{breed} and newborn baby introduction tips")
+        titles.append(f"is {breed} safe around kids")
+
+    # NEW Pattern 33: [breed] recall training
+    for breed in BREEDS:
+        titles.append(f"{breed} recall training guide")
+        titles.append(f"how to get {breed} to come when called")
+        titles.append(f"{breed} off leash recall problems")
+
+    # NEW Pattern 34: [breed] loose leash walking
+    for breed in BREEDS:
+        titles.append(f"{breed} loose leash walking tips")
+        titles.append(f"how to stop {breed} pulling on leash")
+        titles.append(f"{breed} heel training step by step")
+
+    # NEW Pattern 35: [breed] mental stimulation and enrichment
+    for breed in BREEDS:
+        titles.append(f"{breed} mental stimulation ideas")
+        titles.append(f"enrichment activities for {breed}")
+        titles.append(f"how to keep {breed} mentally stimulated")
+
+    # NEW Pattern 36: dog training games and fun methods
+    for breed in BREEDS:
+        titles.append(f"fun training games for {breed}")
+        titles.append(f"how to make training fun for {breed}")
+        titles.append(f"{breed} nose work and scent training")
+
+    # NEW Pattern 37: [breed] body language and communication
+    for breed in BREEDS:
+        titles.append(f"{breed} body language guide")
+        titles.append(f"understanding {breed} behavior signals")
+        titles.append(f"reading {breed} stress signs")
+
+    # NEW Pattern 38: [breed] puppy schedule and routine
+    for breed in BREEDS:
+        titles.append(f"{breed} puppy daily schedule")
+        titles.append(f"first week home with {breed} puppy")
+        titles.append(f"{breed} puppy training milestones")
+
+    # NEW Pattern 39: [service] in [area] Tennessee
+    for service in SERVICES:
+        for area in NASHVILLE_AREAS[:25]:
+            titles.append(f"{service} in {area} tennessee")
+
+    # NEW Pattern 40: [breed] multi-dog household tips
+    for breed in BREEDS:
+        titles.append(f"training {breed} in a multi dog household")
+        titles.append(f"{breed} getting along with other dogs")
+        titles.append(f"introducing {breed} to resident dog tips")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
