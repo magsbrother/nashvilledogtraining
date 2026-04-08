@@ -216,6 +216,79 @@ def generate_title_variations():
         titles.append(f"how to socialize a {breed}")
         titles.append(f"{breed} socialization nashville")
 
+    # NEW Pattern 11: [breed] daily training routine / training schedule
+    for breed in BREEDS:
+        titles.append(f"{breed} daily training routine")
+        titles.append(f"{breed} training schedule for beginners")
+        titles.append(f"how often should you train a {breed}")
+
+    # NEW Pattern 12: [age] [breed] potty training tips
+    for age in AGES[:6]:
+        for breed in BREEDS:
+            titles.append(f"{age} {breed} potty training")
+            titles.append(f"how to potty train a {age} {breed}")
+
+    # NEW Pattern 13: [breed] training in an apartment / small space
+    LIVING_SITUATIONS = [
+        "apartment", "small house", "condo", "townhouse", "with kids",
+        "with cats", "with other dogs", "without a yard", "in a city"
+    ]
+    for breed in BREEDS[:20]:
+        for situation in LIVING_SITUATIONS:
+            titles.append(f"training a {breed} in a {situation}")
+            titles.append(f"{breed} training tips for {situation} living")
+
+    # NEW Pattern 14: crate training [breed] / how to crate train a [breed]
+    for breed in BREEDS:
+        titles.append(f"crate training a {breed}")
+        titles.append(f"how to crate train a {breed}")
+        titles.append(f"{breed} crate training problems")
+
+    # NEW Pattern 15: [breed] separation anxiety help
+    for breed in BREEDS:
+        titles.append(f"{breed} separation anxiety help")
+        titles.append(f"how to help {breed} with separation anxiety")
+        titles.append(f"{breed} alone time training")
+
+    # NEW Pattern 16: how to calm a [breed] / [breed] calming techniques
+    for breed in BREEDS:
+        titles.append(f"how to calm a {breed}")
+        titles.append(f"{breed} calming techniques")
+        titles.append(f"how to calm an anxious {breed}")
+
+    # NEW Pattern 17: [breed] first week home tips / new puppy checklist
+    for breed in BREEDS:
+        titles.append(f"first week home with a {breed}")
+        titles.append(f"bringing home a new {breed} checklist")
+        titles.append(f"what to expect first week with {breed}")
+
+    # NEW Pattern 18: [breed] leash manners / loose leash walking
+    for breed in BREEDS:
+        titles.append(f"{breed} loose leash walking tips")
+        titles.append(f"how to teach {breed} leash manners")
+        titles.append(f"{breed} heel training nashville")
+
+    # NEW Pattern 19: [problem] during [life event]
+    LIFE_EVENTS = [
+        "pregnancy", "baby coming home", "moving houses", "adding a new pet",
+        "divorce", "working from home", "returning to office", "long work hours",
+        "vacation", "boarding", "daycare"
+    ]
+    for problem in PROBLEMS[:10]:
+        for event in LIFE_EVENTS:
+            titles.append(f"dog {problem} during {event}")
+            titles.append(f"managing dog {problem} when {event}")
+
+    # NEW Pattern 20: [breed] aggression toward [target] help
+    AGGRESSION_TARGETS = [
+        "other dogs", "strangers", "kids", "men", "women",
+        "cats", "small animals", "visitors", "mail carrier", "joggers"
+    ]
+    for breed in BREEDS[:20]:
+        for target in AGGRESSION_TARGETS:
+            titles.append(f"{breed} aggression toward {target} help")
+            titles.append(f"{breed} reactive toward {target} nashville")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
