@@ -289,6 +289,80 @@ def generate_title_variations():
             titles.append(f"{breed} aggression toward {target} help")
             titles.append(f"{breed} reactive toward {target} nashville")
 
+    # NEW Pattern 21: [breed] fear of [stimulus]
+    FEAR_STIMULI = [
+        "thunder", "fireworks", "strangers", "other dogs", "loud noises",
+        "cars", "children", "men", "vacuum cleaner", "water"
+    ]
+    for breed in BREEDS:
+        for stimulus in FEAR_STIMULI:
+            titles.append(f"{breed} fear of {stimulus}")
+            titles.append(f"helping {breed} overcome fear of {stimulus}")
+
+    # NEW Pattern 22: how to introduce [breed] to [new thing]
+    INTRODUCTIONS = [
+        "cats", "a baby", "other dogs", "children", "small animals",
+        "a new home", "a new family member", "another dog"
+    ]
+    for breed in BREEDS:
+        for thing in INTRODUCTIONS:
+            titles.append(f"how to introduce {breed} to {thing}")
+            titles.append(f"introducing a {breed} to {thing}")
+
+    # NEW Pattern 23: [breed] [command] training step by step
+    for breed in BREEDS[:20]:
+        for command in COMMANDS[:10]:
+            titles.append(f"{breed} {command} training step by step")
+            titles.append(f"teaching {breed} to {command} step by step")
+
+    # NEW Pattern 24: when to start training / best age to train
+    for breed in BREEDS:
+        titles.append(f"when to start training a {breed} puppy")
+        titles.append(f"best age to start training a {breed}")
+        titles.append(f"at what age can you train a {breed}")
+
+    # NEW Pattern 25: mental stimulation for [breed]
+    for breed in BREEDS:
+        titles.append(f"mental stimulation for {breed}")
+        titles.append(f"brain games for {breed}")
+        titles.append(f"how to mentally stimulate a {breed}")
+
+    # NEW Pattern 26: [breed] body language guide
+    for breed in BREEDS:
+        titles.append(f"{breed} body language guide")
+        titles.append(f"reading {breed} body language")
+        titles.append(f"understanding {breed} body language")
+
+    # NEW Pattern 27: [breed] recall training
+    for breed in BREEDS:
+        titles.append(f"{breed} recall training tips")
+        titles.append(f"how to improve {breed} recall")
+        titles.append(f"{breed} wont come when called help")
+
+    # NEW Pattern 28: [breed] tricks to teach
+    TRICK_LEVELS = [
+        "at home", "for beginners", "in 5 minutes", "for kids to teach",
+        "to impress friends", "for mental stimulation"
+    ]
+    for breed in BREEDS[:25]:
+        for level in TRICK_LEVELS:
+            titles.append(f"{breed} tricks to teach {level}")
+
+    # NEW Pattern 29: best training tools for [breed]
+    TRAINING_TOOLS = [
+        "collar", "harness", "leash", "clicker", "treats", "crate"
+    ]
+    for breed in BREEDS[:20]:
+        for tool in TRAINING_TOOLS:
+            titles.append(f"best training {tool} for {breed}")
+            titles.append(f"{breed} training {tool} recommendations")
+
+    # NEW Pattern 30: [breed] training progress milestones
+    for breed in BREEDS:
+        titles.append(f"{breed} training milestones by age")
+        titles.append(f"{breed} puppy training progress week by week")
+        titles.append(f"what should a trained {breed} know")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
