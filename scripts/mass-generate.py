@@ -363,6 +363,70 @@ def generate_title_variations():
         titles.append(f"{breed} puppy training progress week by week")
         titles.append(f"what should a trained {breed} know")
 
+    # NEW Pattern 31: stubborn [breed] training
+    for breed in BREEDS:
+        titles.append(f"stubborn {breed} training tips")
+        titles.append(f"how to train a stubborn {breed}")
+        titles.append(f"why is my {breed} so stubborn")
+
+    # NEW Pattern 32: [breed] training without treats
+    for breed in BREEDS:
+        titles.append(f"{breed} training without treats")
+        titles.append(f"how to train {breed} without food rewards")
+        titles.append(f"lure free training for {breed}")
+
+    # NEW Pattern 33: dog training games and mental stimulation for [breed]
+    for breed in BREEDS:
+        titles.append(f"dog training games for {breed}")
+        titles.append(f"mental stimulation activities for {breed}")
+        titles.append(f"fun training exercises for {breed}")
+
+    # NEW Pattern 34: best collar and harness for [breed] training
+    for breed in BREEDS:
+        titles.append(f"best training collar for {breed}")
+        titles.append(f"best harness for {breed} training")
+        titles.append(f"{breed} collar vs harness training")
+
+    # NEW Pattern 35: fearful and anxious [breed] training
+    for breed in BREEDS:
+        titles.append(f"fearful {breed} training tips")
+        titles.append(f"how to train a scared {breed}")
+        titles.append(f"{breed} fear aggression training nashville")
+
+    # NEW Pattern 36: [breed] impulse control and self-control training
+    for breed in BREEDS:
+        titles.append(f"{breed} impulse control training")
+        titles.append(f"how to teach {breed} self control")
+        titles.append(f"{breed} impulse control exercises")
+
+    # NEW Pattern 37: [breed] recall and off-leash reliability
+    for breed in BREEDS:
+        titles.append(f"{breed} recall training tips")
+        titles.append(f"how to teach {breed} reliable recall")
+        titles.append(f"{breed} off leash recall nashville")
+
+    # NEW Pattern 38: when and what age to start training [breed]
+    for breed in BREEDS:
+        titles.append(f"when to start training a {breed}")
+        titles.append(f"what age to start training {breed}")
+        titles.append(f"best age to train a {breed}")
+
+    # NEW Pattern 39: [breed] training for specific activities
+    ACTIVITIES = [
+        "hiking", "running", "swimming", "camping", "agility",
+        "dock diving", "nose work", "flyball", "hunting", "therapy work"
+    ]
+    for breed in BREEDS[:20]:
+        for activity in ACTIVITIES:
+            titles.append(f"{breed} training for {activity}")
+            titles.append(f"how to train {breed} for {activity}")
+
+    # NEW Pattern 40: [breed] keeps [problem] no matter what / despite training
+    for breed in BREEDS[:25]:
+        for problem in PROBLEMS[:8]:
+            titles.append(f"{breed} keeps {problem} no matter what")
+            titles.append(f"{breed} still {problem} despite training")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
