@@ -427,6 +427,65 @@ def generate_title_variations():
             titles.append(f"{breed} keeps {problem} no matter what")
             titles.append(f"{breed} still {problem} despite training")
 
+    # NEW Pattern 41: [breed] resource guarding solutions
+    for breed in BREEDS:
+        titles.append(f"{breed} resource guarding solutions")
+        titles.append(f"how to stop {breed} resource guarding")
+        titles.append(f"{breed} resource guarding nashville trainer")
+
+    # NEW Pattern 42: dog training cost in [Nashville area]
+    for area in NASHVILLE_AREAS:
+        titles.append(f"dog training cost in {area}")
+        titles.append(f"how much does dog training cost in {area}")
+
+    # NEW Pattern 43: [age] [breed] obedience training
+    for age in AGES:
+        for breed in BREEDS[:22]:
+            titles.append(f"{age} {breed} obedience training")
+
+    # NEW Pattern 44: [breed] training tips for first time owners
+    for breed in BREEDS:
+        titles.append(f"{breed} training tips for first time owners")
+        titles.append(f"first time {breed} owner training guide")
+
+    # NEW Pattern 45: how to exercise a [breed] / [breed] exercise needs
+    for breed in BREEDS:
+        titles.append(f"how to exercise a {breed}")
+        titles.append(f"{breed} exercise requirements and training")
+
+    # NEW Pattern 46: hyperactive [breed] and zoomies help
+    for breed in BREEDS:
+        titles.append(f"hyperactive {breed} training tips")
+        titles.append(f"how to calm a hyperactive {breed}")
+        titles.append(f"{breed} zoomies what to do")
+
+    # NEW Pattern 47: [problem] control training tips
+    for problem in PROBLEMS:
+        titles.append(f"how to train dog to stop {problem} on command")
+        titles.append(f"{problem} control training tips nashville")
+
+    # NEW Pattern 48: [breed] door manners and boundary training
+    for breed in BREEDS:
+        titles.append(f"{breed} door manners training")
+        titles.append(f"how to train {breed} door boundaries")
+
+    # NEW Pattern 49: dog training for [specific scenario]
+    SCENARIOS = [
+        "reactive dogs", "fearful dogs", "aggressive dogs", "anxious dogs",
+        "rescue dogs", "senior dogs", "deaf dogs", "blind dogs",
+        "dogs with trauma", "high drive dogs", "working dogs", "sporting dogs"
+    ]
+    for scenario in SCENARIOS:
+        titles.append(f"dog training for {scenario}")
+        titles.append(f"tips for training {scenario}")
+        titles.append(f"nashville trainer specializing in {scenario}")
+
+    # NEW Pattern 50: [service] benefits and effectiveness
+    for service in SERVICES:
+        titles.append(f"benefits of {service} for your dog")
+        titles.append(f"does {service} really work")
+        titles.append(f"{service} results and success stories nashville")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
