@@ -486,6 +486,84 @@ def generate_title_variations():
         titles.append(f"does {service} really work")
         titles.append(f"{service} results and success stories nashville")
 
+    # NEW Pattern 51: [breed] training for [owner type]
+    OWNER_TYPES = [
+        "seniors", "busy families", "first responders", "athletes",
+        "remote workers", "veterans", "apartment dwellers", "large families"
+    ]
+    for breed in BREEDS:
+        for owner in OWNER_TYPES:
+            titles.append(f"{breed} training for {owner}")
+            titles.append(f"{breed} training advice for {owner}")
+
+    # NEW Pattern 52: does [training method] work for [breed]
+    TRAINING_METHODS = [
+        "e-collar training", "prong collar training",
+        "positive reinforcement only training", "clicker training",
+        "balanced training", "alpha training", "force free training",
+        "marker training"
+    ]
+    for breed in BREEDS:
+        for method in TRAINING_METHODS:
+            titles.append(f"does {method} work for {breed}")
+
+    # NEW Pattern 53: what to do about [breed] [problem]
+    for breed in BREEDS[:25]:
+        for problem in PROBLEMS:
+            titles.append(f"what to do about {breed} {problem}")
+            titles.append(f"tips for dealing with {breed} {problem}")
+
+    # NEW Pattern 54: [age] [breed] [problem] causes and solutions
+    for age in AGES[:5]:
+        for breed in BREEDS[:20]:
+            for problem in PROBLEMS[:6]:
+                titles.append(f"{age} {breed} {problem} causes and solutions")
+
+    # NEW Pattern 55: is it too late to train a [age] [breed]
+    OLDER_AGES = ["adult", "senior", "older dog", "2 year old", "1 year old", "adolescent"]
+    for age in OLDER_AGES:
+        for breed in BREEDS:
+            titles.append(f"is it too late to train a {age} {breed}")
+            titles.append(f"can you train a {age} {breed}")
+            titles.append(f"training a {age} {breed} is it possible")
+
+    # NEW Pattern 56: dog behaviorist / certified trainer in [area]
+    for area in NASHVILLE_AREAS:
+        titles.append(f"dog behaviorist {area}")
+        titles.append(f"certified dog trainer {area}")
+        titles.append(f"dog behavior consultant {area}")
+        titles.append(f"reactive dog specialist {area}")
+
+    # NEW Pattern 57: [breed] training on a budget
+    for breed in BREEDS:
+        titles.append(f"{breed} training on a budget")
+        titles.append(f"cheap dog training for {breed}")
+        titles.append(f"free dog training tips for {breed}")
+        titles.append(f"affordable {breed} obedience training")
+
+    # NEW Pattern 58: how to choose a dog trainer for [breed]
+    for breed in BREEDS:
+        titles.append(f"how to choose a dog trainer for {breed}")
+        titles.append(f"what to look for in a {breed} trainer")
+        titles.append(f"questions to ask a {breed} dog trainer")
+
+    # NEW Pattern 59: [problem] in multi-dog households
+    for problem in PROBLEMS:
+        titles.append(f"{problem} in multi dog households")
+        titles.append(f"managing {problem} with multiple dogs nashville")
+        titles.append(f"training two dogs {problem} solutions")
+        titles.append(f"how to stop {problem} in a multi dog home")
+
+    # NEW Pattern 60: [breed] enrichment and mental stimulation activities
+    ENRICHMENT_TYPES = [
+        "puzzle feeders", "nose work", "agility", "trick training",
+        "scent work", "sniff walks", "fetch games", "tug games"
+    ]
+    for breed in BREEDS[:20]:
+        for enrichment in ENRICHMENT_TYPES:
+            titles.append(f"{breed} enrichment with {enrichment}")
+            titles.append(f"how to use {enrichment} for {breed} mental stimulation")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
