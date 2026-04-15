@@ -564,6 +564,65 @@ def generate_title_variations():
             titles.append(f"{breed} enrichment with {enrichment}")
             titles.append(f"how to use {enrichment} for {breed} mental stimulation")
 
+    # NEW Pattern 61: [breed] thundershirt and calming aid review
+    for breed in BREEDS:
+        titles.append(f"{breed} thundershirt calming review")
+        titles.append(f"do calming aids work for {breed} anxiety")
+        titles.append(f"best calming products for anxious {breed}")
+
+    # NEW Pattern 62: [breed] nail trim and grooming cooperation training
+    for breed in BREEDS:
+        titles.append(f"{breed} nail trim training tips")
+        titles.append(f"{breed} grooming cooperation training")
+        titles.append(f"how to desensitize {breed} to grooming nashville")
+
+    # NEW Pattern 63: [breed] training in summer heat and cold weather
+    for breed in BREEDS:
+        titles.append(f"{breed} training in summer heat nashville")
+        titles.append(f"{breed} training in cold weather tips")
+        titles.append(f"how to train {breed} in extreme weather")
+
+    # NEW Pattern 64: [breed] dog training 101 beginner guide
+    for breed in BREEDS:
+        titles.append(f"{breed} dog training 101")
+        titles.append(f"beginners guide to training a {breed}")
+        titles.append(f"complete {breed} training guide for new owners")
+
+    # NEW Pattern 65: [breed] training with children in the home
+    for breed in BREEDS:
+        titles.append(f"{breed} training with children nashville")
+        titles.append(f"how to train {breed} to be safe with kids")
+        titles.append(f"{breed} kid friendly training tips")
+
+    # NEW Pattern 66: how to find a certified dog trainer in [area]
+    for area in NASHVILLE_AREAS:
+        titles.append(f"how to find a certified dog trainer in {area}")
+        titles.append(f"top rated dog trainers in {area}")
+        titles.append(f"local dog training help in {area}")
+
+    # NEW Pattern 67: [area] off leash training recommendations
+    for area in NASHVILLE_AREAS:
+        titles.append(f"{area} off leash training recommendations")
+        titles.append(f"off leash dog parks and training spots in {area}")
+
+    # NEW Pattern 68: [breed] training results in 30 days
+    for breed in BREEDS:
+        titles.append(f"{breed} training results in 30 days")
+        titles.append(f"30 day {breed} training plan nashville")
+        titles.append(f"how fast can you train a {breed} to obey")
+
+    # NEW Pattern 69: [breed] confidence building training
+    for breed in BREEDS:
+        titles.append(f"{breed} confidence building exercises")
+        titles.append(f"how to build confidence in a shy {breed}")
+        titles.append(f"{breed} confidence training nashville")
+
+    # NEW Pattern 70: [breed] training mistakes first time owners make
+    for breed in BREEDS:
+        titles.append(f"top {breed} training mistakes first time owners make")
+        titles.append(f"what not to do when training a {breed}")
+        titles.append(f"{breed} training dos and donts nashville")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
