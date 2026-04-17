@@ -623,6 +623,105 @@ def generate_title_variations():
         titles.append(f"what not to do when training a {breed}")
         titles.append(f"{breed} training dos and donts nashville")
 
+    # NEW Pattern 71: [breed] vs [breed] which is easier to train
+    BREED_PAIRS = [
+        ("golden retriever", "labrador"), ("german shepherd", "belgian malinois"),
+        ("border collie", "australian shepherd"), ("poodle", "doodle"),
+        ("husky", "alaskan malamute"), ("pit bull", "rottweiler"),
+        ("beagle", "basset hound"), ("chihuahua", "yorkie"),
+        ("great dane", "english mastiff"), ("french bulldog", "bulldog")
+    ]
+    for b1, b2 in BREED_PAIRS:
+        titles.append(f"{b1} vs {b2} which is easier to train")
+        titles.append(f"training differences between {b1} and {b2}")
+        titles.append(f"{b1} vs {b2} training comparison nashville")
+
+    # NEW Pattern 72: how to train [breed] to be a good family dog
+    FAMILY_CONTEXTS = [
+        "a good family dog", "safe around children", "gentle with toddlers",
+        "calm around guests", "good with seniors", "good with babies",
+        "polite at family gatherings", "calm at holidays"
+    ]
+    for breed in BREEDS:
+        for context in FAMILY_CONTEXTS[:4]:
+            titles.append(f"how to train {breed} to be {context}")
+            titles.append(f"{breed} training to become {context}")
+
+    # NEW Pattern 73: [area] dog trainer reviews and recommendations
+    REVIEW_TYPES = [
+        "reviews", "recommendations", "cost guide", "near me guide",
+        "top rated", "best reviewed", "client success stories"
+    ]
+    for area in NASHVILLE_AREAS:
+        for review in REVIEW_TYPES[:3]:
+            titles.append(f"dog trainer {area} {review}")
+            titles.append(f"{area} dog training {review}")
+
+    # NEW Pattern 74: [breed] puppy vs adult training differences
+    for breed in BREEDS:
+        titles.append(f"training a {breed} puppy vs adult dog differences")
+        titles.append(f"is it harder to train adult {breed} than a puppy")
+        titles.append(f"{breed} adult dog training vs puppy training nashville")
+
+    # NEW Pattern 75: [command] training for [breed] step by step guide
+    for command in COMMANDS:
+        for breed in BREEDS[:15]:
+            titles.append(f"teaching the {command} command to a {breed}")
+            titles.append(f"{breed} {command} command training guide nashville")
+
+    # NEW Pattern 76: how to handle [breed] [problem] without punishment
+    HUMANE_METHODS = ["without punishment", "using positive reinforcement",
+                      "humanely and effectively", "without a shock collar",
+                      "the force free way", "with kindness"]
+    for breed in BREEDS[:20]:
+        for problem in PROBLEMS[:8]:
+            for method in HUMANE_METHODS[:2]:
+                titles.append(f"how to stop {breed} {problem} {method}")
+
+    # NEW Pattern 77: [service] for [specific dog type] in nashville
+    DOG_TYPES = [
+        "rescue dogs", "shelter dogs", "aggressive dogs", "fearful dogs",
+        "reactive dogs", "senior dogs", "deaf dogs", "puppies under 6 months",
+        "dogs with trauma", "working dogs"
+    ]
+    for service in SERVICES:
+        for dog_type in DOG_TYPES:
+            titles.append(f"{service} for {dog_type} nashville")
+            titles.append(f"{service} for {dog_type} in middle tennessee")
+
+    # NEW Pattern 78: [month/season] dog training tips nashville
+    MONTHS = [
+        "january", "february", "march", "april", "may", "june",
+        "july", "august", "september", "october", "november", "december",
+        "winter", "spring", "summer", "fall"
+    ]
+    for month in MONTHS:
+        titles.append(f"{month} dog training tips nashville")
+        titles.append(f"dog training in {month} nashville tips")
+        titles.append(f"training your dog during {month} in nashville")
+
+    # NEW Pattern 79: [breed] health and training connection
+    HEALTH_TOPICS = [
+        "hip dysplasia and training", "joint pain and exercise",
+        "anxiety medication and training", "diet and behavior connection",
+        "exercise needs for training success", "energy level and training approach",
+        "health issues that affect training", "age related training adjustments"
+    ]
+    for breed in BREEDS[:20]:
+        for topic in HEALTH_TOPICS[:3]:
+            titles.append(f"{breed} {topic}")
+            titles.append(f"how {topic} affects {breed} training")
+
+    # NEW Pattern 80: dog training success stories [area]
+    SUCCESS_TYPES = [
+        "success stories", "before and after", "client results",
+        "transformation stories", "training wins", "real results"
+    ]
+    for area in NASHVILLE_AREAS:
+        for success in SUCCESS_TYPES[:2]:
+            titles.append(f"dog training {success} {area}")
+            titles.append(f"nashville dog training {success} {area}")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
@@ -680,17 +779,20 @@ def create_post(title, output_dir):
     output_path.write_text(html)
     return {"slug": slug, "title": display_title, "url": f"https://magsbrother.github.io/nashvilledogtraining/blog/{slug}.html"}
 
-def main():
+def main(max_new=50):
     blog_dir = Path(__file__).parent.parent / "blog"
     titles = generate_title_variations()
+    random.shuffle(titles)
     print(f"Generated {len(titles)} unique title combinations")
 
     created = 0
     for title in titles:
+        if max_new and created >= max_new:
+            break
         result = create_post(title, blog_dir)
         if result:
             created += 1
-            if created % 100 == 0:
+            if created % 10 == 0:
                 print(f"Created {created} posts...")
 
     print(f"\nTotal new posts created: {created}")
