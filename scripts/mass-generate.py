@@ -722,6 +722,89 @@ def generate_title_variations():
             titles.append(f"dog training {success} {area}")
             titles.append(f"nashville dog training {success} {area}")
 
+    # NEW Pattern 81: signs your [breed] needs professional training
+    SIGNS = [
+        "needs professional training", "is out of control", "has a behavior problem",
+        "needs a trainer", "is beyond basic obedience", "needs advanced training"
+    ]
+    for breed in BREEDS:
+        for sign in SIGNS[:3]:
+            titles.append(f"signs your {breed} {sign}")
+            titles.append(f"when does a {breed} {sign}")
+
+    # NEW Pattern 82: [breed] training using [method/technology]
+    MODERN_METHODS = [
+        "using a clicker", "with a training app", "using hand signals",
+        "without verbal commands", "with marker training", "using play rewards",
+        "with a long line", "using place board training"
+    ]
+    for breed in BREEDS[:20]:
+        for method in MODERN_METHODS:
+            titles.append(f"{breed} training {method}")
+            titles.append(f"how to train a {breed} {method}")
+
+    # NEW Pattern 83: dog training myths about [breed]
+    for breed in BREEDS:
+        titles.append(f"dog training myths about {breed}")
+        titles.append(f"common misconceptions about training {breed}")
+        titles.append(f"truth about {breed} trainability nashville")
+
+    # NEW Pattern 84: how much exercise does [breed] need
+    for breed in BREEDS:
+        titles.append(f"how much exercise does a {breed} need daily")
+        titles.append(f"{breed} exercise and training connection")
+        titles.append(f"exercise requirements for a well trained {breed}")
+
+    # NEW Pattern 85: [breed] multi-step command training
+    MULTI_COMMANDS = [
+        "sit stay and come sequence", "down stay recall combo",
+        "heel and place command chain", "off and sit command sequence",
+        "leave it and look at me combo", "stay and release command training"
+    ]
+    for breed in BREEDS[:20]:
+        for combo in MULTI_COMMANDS:
+            titles.append(f"{breed} {combo}")
+            titles.append(f"teaching {breed} the {combo}")
+
+    # NEW Pattern 86: dog training vocabulary every [breed] owner should know
+    for breed in BREEDS:
+        titles.append(f"dog training vocabulary for {breed} owners")
+        titles.append(f"training terms every {breed} owner should know")
+        titles.append(f"dog training glossary for {breed} beginners")
+
+    # NEW Pattern 87: [breed] training for seniors and elderly owners
+    for breed in BREEDS:
+        titles.append(f"{breed} training for elderly owners")
+        titles.append(f"best {breed} training methods for senior owners")
+        titles.append(f"low effort {breed} training for seniors nashville")
+
+    # NEW Pattern 88: [breed] in Nashville dog parks training tips
+    NASHVILLE_PARKS = [
+        "centennial dog park", "shelby park nashville", "shelby bottoms nashville",
+        "percy warner park", "radnor lake", "edwin warner park",
+        "beaman park nashville", "two rivers dog park"
+    ]
+    for breed in BREEDS[:20]:
+        for park in NASHVILLE_PARKS:
+            titles.append(f"{breed} training at {park}")
+            titles.append(f"bringing your {breed} to {park} training tips")
+
+    # NEW Pattern 89: what to expect from [service] in Nashville
+    EXPECTATIONS = [
+        "what to expect from", "how to prepare for", "questions to ask before",
+        "results you can expect from", "timeline for", "cost breakdown for"
+    ]
+    for service in SERVICES:
+        for expectation in EXPECTATIONS:
+            titles.append(f"{expectation} {service} nashville")
+            titles.append(f"{expectation} {service} in middle tennessee")
+
+    # NEW Pattern 90: [breed] training progress tracking
+    for breed in BREEDS:
+        titles.append(f"how to track {breed} training progress")
+        titles.append(f"{breed} training journal tips")
+        titles.append(f"measuring {breed} training success nashville")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
