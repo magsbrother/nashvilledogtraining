@@ -805,6 +805,132 @@ def generate_title_variations():
         titles.append(f"{breed} training journal tips")
         titles.append(f"measuring {breed} training success nashville")
 
+    # NEW Pattern 91: [number] tips for training a [breed]
+    TIP_COUNTS = ["5", "7", "10", "12", "15"]
+    for count in TIP_COUNTS:
+        for breed in BREEDS:
+            titles.append(f"{count} tips for training a {breed}")
+            titles.append(f"top {count} {breed} training secrets nashville")
+
+    # NEW Pattern 92: [breed] training week by week guide
+    WEEKS = ["week 1", "week 2", "week 3", "week 4", "week 8", "week 12"]
+    for breed in BREEDS[:20]:
+        for week in WEEKS:
+            titles.append(f"{breed} puppy training {week} guide")
+            titles.append(f"what to train {breed} at {week}")
+
+    # NEW Pattern 93: [breed] night training and sleep routine
+    for breed in BREEDS:
+        titles.append(f"{breed} night training tips")
+        titles.append(f"how to get {breed} to sleep through the night")
+        titles.append(f"{breed} bedtime routine training nashville")
+
+    # NEW Pattern 94: outdoor and adventure training for [breed]
+    OUTDOOR_ACTIVITIES = [
+        "hiking trails", "camping trips", "lake visits", "boat rides",
+        "off road adventures", "kayaking", "biking", "paddle boarding"
+    ]
+    for breed in BREEDS[:20]:
+        for activity in OUTDOOR_ACTIVITIES:
+            titles.append(f"{breed} training for {activity}")
+            titles.append(f"preparing your {breed} for {activity} nashville")
+
+    # NEW Pattern 95: Nashville dog friendly spots and training tips
+    DOG_FRIENDLY_PLACES = [
+        "broadway nashville", "fifth and broadway", "gulch nashville",
+        "12 south nashville", "germantown nashville district",
+        "bicentennial mall nashville", "riverside village nashville",
+        "nations nashville", "east nashville bars", "percy priest lake"
+    ]
+    for place in DOG_FRIENDLY_PLACES:
+        titles.append(f"dog training tips for visiting {place}")
+        titles.append(f"how to prepare your dog for {place}")
+        titles.append(f"dog manners guide for {place}")
+
+    # NEW Pattern 96: [breed] 90 day transformation plan
+    for breed in BREEDS:
+        titles.append(f"{breed} 90 day obedience transformation nashville")
+        titles.append(f"zero to obedient {breed} 90 day plan")
+        titles.append(f"{breed} training transformation in 3 months")
+
+    # NEW Pattern 97: [breed] training motivation and engagement tips
+    for breed in BREEDS:
+        titles.append(f"how to motivate a {breed} to train")
+        titles.append(f"{breed} training engagement tips")
+        titles.append(f"keeping {breed} motivated during training sessions")
+
+    # NEW Pattern 98: Nashville dog training package deals and pricing
+    PACKAGE_TYPES = [
+        "board and train packages", "private lesson packages",
+        "group class packages", "puppy training packages",
+        "behavior modification packages", "in home training packages"
+    ]
+    for package in PACKAGE_TYPES:
+        titles.append(f"nashville dog training {package} and pricing")
+        titles.append(f"affordable {package} in nashville")
+        titles.append(f"what is included in {package} nashville")
+
+    # NEW Pattern 99: [breed] training with multiple family members
+    FAMILY_DYNAMICS = [
+        "when kids are involved", "with a spouse who disagrees on training",
+        "in a large family", "with elderly family members",
+        "when family members undermine training", "with teenagers at home"
+    ]
+    for breed in BREEDS[:20]:
+        for dynamic in FAMILY_DYNAMICS:
+            titles.append(f"{breed} training {dynamic}")
+            titles.append(f"how to train a {breed} consistently {dynamic}")
+
+    # NEW Pattern 100: [breed] training certification and professional help guide
+    for breed in BREEDS:
+        titles.append(f"do you need a certified trainer for your {breed}")
+        titles.append(f"when to hire a professional for {breed} training")
+        titles.append(f"professional vs diy {breed} training nashville")
+
+    # NEW Pattern 101: [breed] indoor training exercises for bad weather
+    for breed in BREEDS:
+        titles.append(f"{breed} indoor training exercises for bad weather")
+        titles.append(f"indoor {breed} training activities nashville")
+        titles.append(f"rainy day training ideas for {breed}")
+
+    # NEW Pattern 102: [breed] training for apartment life Nashville
+    APARTMENT_CHALLENGES = [
+        "small space training", "elevator manners", "hallway greetings",
+        "noise control in apartment", "potty training without a yard",
+        "neighbor noise reactivity"
+    ]
+    for breed in BREEDS[:20]:
+        for challenge in APARTMENT_CHALLENGES:
+            titles.append(f"{breed} {challenge} nashville")
+            titles.append(f"how to manage {breed} {challenge}")
+
+    # NEW Pattern 103: [breed] food and treat training tips
+    FOOD_TOPICS = [
+        "best treats for training", "training with high value rewards",
+        "when your dog only works for food", "food motivated training pros and cons",
+        "using kibble vs treats for training", "training a picky eater"
+    ]
+    for breed in BREEDS[:20]:
+        for topic in FOOD_TOPICS:
+            titles.append(f"{breed} {topic}")
+            titles.append(f"{topic} for {breed} nashville")
+
+    # NEW Pattern 104: [breed] training consistency tips for busy owners
+    BUSY_OWNER_TIPS = [
+        "for busy owners", "when you have no time", "short training sessions that work",
+        "15 minute training routines", "training around a full schedule"
+    ]
+    for breed in BREEDS[:20]:
+        for tip in BUSY_OWNER_TIPS:
+            titles.append(f"{breed} training {tip}")
+            titles.append(f"how to train your {breed} {tip}")
+
+    # NEW Pattern 105: [breed] training red flags and warning signs
+    for breed in BREEDS:
+        titles.append(f"{breed} training red flags to watch for")
+        titles.append(f"warning signs your {breed} needs professional help")
+        titles.append(f"when {breed} training is not working what to do")
+
     return list(set(titles))
 
 def create_post(title, output_dir):
